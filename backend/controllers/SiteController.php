@@ -61,13 +61,7 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        $model = new Posts();
-        $posts = $model::find()->asArray()->all();
-
-        return $this->render('index', [
-            'posts' => $posts,
-            'model' => $model
-        ]);
+        return $this->render( 'index' );
     }
 
     /**

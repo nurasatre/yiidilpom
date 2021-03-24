@@ -15,23 +15,6 @@ $this->title = 'Admin Index';
     </div>
 
     <div class="body-content">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                <?php foreach( $model as $name => $value ): ?>
-                    <th scope="col"><?= $model->getAttributeLabel( $name ) ?></th>
-                <?php endforeach; ?>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach( $posts as $post ): ?>
-                    <tr>
-                        <?php foreach( $model as $name => $value ): ?>
-                            <th><?= $post[ $name ] ?></th>
-                        <?php endforeach; ?>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+        
     </div>
 </div>
