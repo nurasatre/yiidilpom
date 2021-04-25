@@ -137,3 +137,15 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+html {
+    font-size: unset;
+}
+
+#layoutSidenav_content {
+    padding: 2rem 0;
+}
+
+nav form input.form-control.form-control.form-control {
+    width: unset;
+}

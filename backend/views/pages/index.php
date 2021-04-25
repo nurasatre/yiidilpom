@@ -3,35 +3,50 @@
 /* @var $this yii\web\View */
 
 $this->title = 'Posts Index';
+$this->registerCssFile(
+    'https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css'
+);
+$this->registerJsFile(
+    'https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js',
+    ['depends' => [\yii\web\JqueryAsset::class]]
+);
+$this->registerJsFile(
+    'https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js',
+    ['depends' => [\yii\web\JqueryAsset::class]]
+);
+$this->registerJsFile(
+    '@web/js/pages/index.js',
+    ['depends' => [\yii\web\JqueryAsset::class]]
+);
 ?>
 <div class="site-index">
-
-    <div class="jumbotron">
-        <h1>Congratulations!</h1>
-
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
-    </div>
-
     <div class="body-content">
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <?php foreach( $model as $name => $value ): ?>
-                    <th scope="col"><?= $model->getAttributeLabel( $name ) ?></th>
-                <?php endforeach; ?>
-            </tr>
-            </thead>
-            <tbody>
-            <?php foreach( $posts as $post ): ?>
+        <div class="table-responsive">
+            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <thead>
                 <tr>
-                    <?php foreach( $model as $name => $value ): ?>
-                        <th><?= $post[ $name ] ?></th>
+                    <?php foreach ($model as $name => $value): ?>
+                        <th scope="col"><?= $model->getAttributeLabel($name) ?></th>
                     <?php endforeach; ?>
                 </tr>
-            <?php endforeach; ?>
-            </tbody>
-        </table>
+                </thead>
+                <tfoot>
+                <tr>
+                    <?php foreach ($model as $name => $value): ?>
+                        <th scope="col"><?= $model->getAttributeLabel($name) ?></th>
+                    <?php endforeach; ?>
+                </tr>
+                </tfoot>
+                <tbody>
+                <?php foreach ($posts as $post): ?>
+                    <tr>
+                        <?php foreach ($model as $name => $value): ?>
+                            <td><?= $post[$name] ?></td>
+                        <?php endforeach; ?>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
     </div>
 </div>
