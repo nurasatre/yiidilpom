@@ -17,20 +17,20 @@ $this->title = 'Posts Index';
     <div class="body-content">
         <table class="table table-hover">
             <thead>
-                <tr>
+            <tr>
                 <?php foreach( $model as $name => $value ): ?>
                     <th scope="col"><?= $model->getAttributeLabel( $name ) ?></th>
                 <?php endforeach; ?>
-                </tr>
+            </tr>
             </thead>
             <tbody>
-                <?php foreach( $posts as $post ): ?>
-                    <tr>
-                        <?php foreach( $model as $name => $value ): ?>
-                            <th><?= $post[ $name ] ?></th>
-                        <?php endforeach; ?>
-                    </tr>
-                <?php endforeach; ?>
+            <?php foreach( $posts as $post ): ?>
+                <tr>
+                    <?php foreach( $model as $name => $value ): ?>
+                        <th><?= $post[ $name ] ?></th>
+                    <?php endforeach; ?>
+                </tr>
+            <?php endforeach; ?>
             </tbody>
         </table>
     </div>
