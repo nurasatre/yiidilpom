@@ -20,4 +20,12 @@ class PagesController extends Controller {
             'model' => $model
         ]);
     }
+
+    public function actionCreate() {
+        $model = new Pages();
+
+        return $this->render('edit', [
+            'model' => $model
+        ]);
+    }
 }
