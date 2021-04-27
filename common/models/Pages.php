@@ -5,8 +5,10 @@ use yii\db\ActiveRecord;
 
 class Pages extends ActiveRecord
 {
+    /*
     public $title;
     public $content;
+    */
 
     public function attributeLabels()
     {
@@ -19,7 +21,7 @@ class Pages extends ActiveRecord
     public function rules()
     {
         return [
-            [['title', 'content'], 'required']
+            [['title', 'content'], 'required'],
         ];
     }
 }

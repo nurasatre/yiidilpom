@@ -2,9 +2,8 @@
   <div id="app">
     <BootCard header="Title">
       <editor
+        v-model="pageData.title"
         :api-key="api()"
-        v-model="title"
-        tag-name="h1"
         :init="{
             menubar: false,
             inline: true,
@@ -22,12 +21,13 @@
             powerpaste_html_import: 'clean',
           }"
         :inline="true"
+        tag-name="h1"
       />
     </BootCard>
     <BootCard header="Content">
       <editor
-        v-model="content"
-        :inline="true"
+        v-model="pageData.content"
+        :api-key="api()"
         :init="{
           menubar: false,
           plugins: [
@@ -50,12 +50,13 @@
           powerpaste_word_import: 'clean',
           powerpaste_html_import: 'clean',
         }"
-        :api-key="api()"
+        :inline="true"
       />
     </BootCard>
     <div class="button-wrapper">
-      <button type="button" class="btn btn-primary btn-lg" @click="savePage">Save Page</button>
+      <button class="btn btn-primary btn-lg" type="button" @click="savePage">Save Page</button>
     </div>
+    <notifications position="top center"/>
   </div>
 </template>
 
@@ -63,18 +64,60 @@
 import Editor from '@tinymce/tinymce-vue';
 import BootCard from "./BootCard";
 
+
+const $ = jQuery;
+const { action } = window.pageRequest;
+
+
+
 export default {
   name: 'app',
   components: {Editor, BootCard},
   data() {
     return {
-      content: 'Start typing here...',
-      title: 'My Page'
+      pageData: {
+        id: 0,
+        content: 'Start typing here...',
+        title: 'My Page',
+        created_at: new Date().toISOString().slice(0, 19).replace('T', ' ')
+      }
     }
   },
+  created() {
+    const { model = {} } = window.pageRequest;
+
+    this.pageData = { ...this.pageData, ...model };
+  },
   methods: {
+
     savePage() {
-      alert(this.content);
+      const self = this;
+
+      $.ajax({
+        ...window.pageAppConfig,
+        data: this.pageData
+      }).done(function (response) {
+        if (response.success) {
+          self.$notify( {
+            title: 'Response',
+            type: 'success',
+            text: response.success
+          } );
+        } else {
+          self.$notify( {
+            title: 'Response',
+            type: 'error',
+            text: response.error
+          } );
+        }
+      }).fail(function ( response ) {
+        // Если произошла ошибка при отправке запроса
+        self.$notify( {
+          title: 'Response',
+          type: 'error',
+          text: response.error
+        } );
+      })
     },
     api() {
       return 'pfkvrcy9sxo3vvg58pnjy8c8kznnpti2ln4f34sb3oq0p7gb';
@@ -99,5 +142,6 @@ export default {
 #app .mce-content-body {
   outline-offset: 20px;
 }
+
 </style>
 

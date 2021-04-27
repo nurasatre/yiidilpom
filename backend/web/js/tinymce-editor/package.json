@@ -11,7 +11,8 @@
   },
   "dependencies": {
     "@tinymce/tinymce-vue": "^3.2.8",
-    "vue": "^2.5.11"
+    "vue": "^2.5.11",
+    "vue-notification": "^1.3.20"
   },
   "browserslist": [
     "> 1%",

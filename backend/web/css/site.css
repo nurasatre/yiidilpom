@@ -120,9 +120,9 @@ a.desc:after {
     border: none;
 }
 
-@media(max-width:767px) {
+@media (max-width: 767px) {
     .nav li > form > button.logout {
-        display:block;
+        display: block;
         text-align: left;
         width: 100%;
         padding: 10px 15px;
@@ -149,3 +149,14 @@ html {
 nav form input.form-control.form-control.form-control {
     width: unset;
 }
+
+
+
+.vue-notification-wrapper {
+    display: block;
+    overflow: hidden;
+    width: 100%;
+    margin: 2.5rem;
+    padding: 0
+}
+

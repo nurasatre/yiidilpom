@@ -18,6 +18,7 @@ $this->registerJsFile(
     '@web/js/pages/index.js',
     ['depends' => [\yii\web\JqueryAsset::class]]
 );
+$url = \Yii::$app->urlManager;
 ?>
 <div class="site-index">
     <div class="body-content">
@@ -28,6 +29,7 @@ $this->registerJsFile(
                     <?php foreach ($model as $name => $value): ?>
                         <th scope="col"><?= $model->getAttributeLabel($name) ?></th>
                     <?php endforeach; ?>
+                    <th scope="col">Actions</th>
                 </tr>
                 </thead>
                 <tfoot>
@@ -35,6 +37,7 @@ $this->registerJsFile(
                     <?php foreach ($model as $name => $value): ?>
                         <th scope="col"><?= $model->getAttributeLabel($name) ?></th>
                     <?php endforeach; ?>
+                    <th scope="col">Actions</th>
                 </tr>
                 </tfoot>
                 <tbody>
@@ -43,6 +46,7 @@ $this->registerJsFile(
                         <?php foreach ($model as $name => $value): ?>
                             <td><?= $post[$name] ?></td>
                         <?php endforeach; ?>
+                        <td><a href="<?=$url->createAbsoluteUrl(["pages/edit/{$post['id']}"])?>">Edit</a></td>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>
