@@ -2,11 +2,13 @@ var path = require('path')
 var webpack = require('webpack')
 
 module.exports = {
-  entry: './src/main.js',
+  entry: {
+    'user': './src/user/main.js',
+    'pages': './src/pages/main.js',
+  },
   output: {
-    path: path.resolve(__dirname, '../pages'),
-    publicPath: '/pages/',
-    filename: 'editor.build.js'
+    path: path.resolve( __dirname, '../dist' ),
+    filename: '[name].bundle.js'
   },
   module: {
     rules: [
@@ -16,12 +18,11 @@ module.exports = {
           'vue-style-loader',
           'css-loader'
         ],
-      },      {
+      }, {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
-          loaders: {
-          }
+          loaders: {}
           // other vue-loader options go here
         }
       },

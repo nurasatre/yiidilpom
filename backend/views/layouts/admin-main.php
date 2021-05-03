@@ -1,6 +1,7 @@
 <?php
 
 /* @var $this \yii\web\View */
+
 /* @var $content string */
 
 use backend\assets\AppAsset;
@@ -24,8 +25,9 @@ $url = \Yii::$app->urlManager;
 <?php $this->beginBody() ?>
 
 <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
-    <a class="navbar-brand" href="<?= $url->createAbsoluteUrl([]); ?>">Noora CMS</a>
-    <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i></button>
+    <a class="navbar-brand" href="<?= $url->createAbsoluteUrl(['']); ?>">Noora CMS</a>
+    <button class="btn btn-link btn-sm order-1 order-lg-0" id="sidebarToggle" href="#"><i class="fas fa-bars"></i>
+    </button>
     <!-- Navbar Search-->
     <!--<form class="d-none d-md-inline-block form-inline ml-auto mr-0 mr-md-3 my-2 my-md-0">
         <div class="input-group">
@@ -38,12 +40,18 @@ $url = \Yii::$app->urlManager;
     <!-- Navbar-->
     <ul class="navbar-nav ml-auto ml-md-0">
         <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+            <a class="nav-link dropdown-toggle" id="userDropdown" href="#" role="button" data-toggle="dropdown"
+               aria-haspopup="true" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">Settings</a>
-                <a class="dropdown-item" href="#">Activity Log</a>
+                <a class="dropdown-item" href="<?= $url->createAbsoluteUrl(['user']); ?>">Profile</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="login.html">Logout</a>
+                   <?= Html::beginForm(['/site/logout'], 'post')
+                   . Html::submitButton(
+                       'Logout (' . Yii::$app->user->identity->username . ')',
+                       ['class' => 'dropdown-item']
+                   )
+                   . Html::endForm()
+                   ?>
             </div>
         </li>
     </ul>
@@ -55,35 +63,29 @@ $url = \Yii::$app->urlManager;
             <div class="sb-sidenav-menu">
                 <div class="nav">
                     <div class="sb-sidenav-menu-heading">Core</div>
-                    <a class="nav-link" href="<?= $url->createAbsoluteUrl([]); ?>">
+                    <a class="nav-link" href="<?= $url->createAbsoluteUrl(['']); ?>">
                         <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                         Dashboard
                     </a>
                     <div class="sb-sidenav-menu-heading">Interface</div>
-                    <a class="nav-link collapsed" href="<?= $url->createAbsoluteUrl([ 'pages' ]); ?>" data-toggle="collapse" data-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                    <a class="nav-link collapsed" href="<?= $url->createAbsoluteUrl(['pages']); ?>"
+                       data-toggle="collapse" data-target="#collapsePages" aria-expanded="false"
+                       aria-controls="collapsePages">
                         <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                         Pages
                         <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                     </a>
-                    <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-parent="#sidenavAccordion">
+                    <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
+                         data-parent="#sidenavAccordion">
                         <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                            <a class="nav-link" href="<?= $url->createAbsoluteUrl([ 'pages/create' ]); ?>">
+                            <a class="nav-link" href="<?= $url->createAbsoluteUrl(['pages/create']); ?>">
                                 Add New
                             </a>
-                            <a class="nav-link" href="<?= $url->createAbsoluteUrl([ 'pages' ]); ?>">
+                            <a class="nav-link" href="<?= $url->createAbsoluteUrl(['pages']); ?>">
                                 View All
                             </a>
                         </nav>
                     </div>
-                    <div class="sb-sidenav-menu-heading">Addons</div>
-                    <a class="nav-link" href="charts.html">
-                        <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                        Charts
-                    </a>
-                    <a class="nav-link" href="tables.html">
-                        <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                        Tables
-                    </a>
                 </div>
             </div>
             <div class="sb-sidenav-footer">

@@ -62,7 +62,7 @@
 
 <script>
 import Editor from '@tinymce/tinymce-vue';
-import BootCard from "./BootCard";
+import BootCard from "../components/BootCard";
 
 
 const $ = jQuery;
