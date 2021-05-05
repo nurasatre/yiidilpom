@@ -5,6 +5,7 @@ module.exports = {
   entry: {
     'user': './src/user/main.js',
     'pages': './src/pages/main.js',
+    'files': './src/files/main.js',
   },
   output: {
     path: path.resolve( __dirname, '../dist' ),
