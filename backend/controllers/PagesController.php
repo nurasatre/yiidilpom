@@ -75,7 +75,7 @@ class PagesController extends Controller
         if (!$isLoad) {
             return ["error" => "Failed loading data."];
         }
-
+        
         return $model->save()
             ? [
                 "success" => "Saved successfully!"
