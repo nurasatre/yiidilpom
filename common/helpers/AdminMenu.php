@@ -34,15 +34,34 @@ class AdminMenu {
 				'url'      => $url->createAbsoluteUrl( [ 'pages' ] ),
 				'children' => [
 					[
+						'slug'  => 'pageIndex',
+						'label' => 'View All',
+						'url'   => $url->createAbsoluteUrl( [ 'pages' ] ),
+					],
+					[
 						'slug'  => 'pagesCreate',
 						'label' => 'Add New',
 						'url'   => $url->createAbsoluteUrl( [ 'pages/create' ] ),
 					],
+				]
+			],
+			[
+				'type'     => 'link',
+				'slug'     => 'posts',
+				'label'    => 'Posts',
+				'icon'     => 'far fa-newspaper',
+				'url'      => $url->createAbsoluteUrl( [ 'posts' ] ),
+				'children' => [
 					[
-						'slug'  => 'pageIndex',
+						'slug'  => 'postsIndex',
 						'label' => 'View All',
-						'url'   => $url->createAbsoluteUrl( [ 'pages' ] ),
-					]
+						'url'   => $url->createAbsoluteUrl( [ 'posts' ] ),
+					],
+					[
+						'slug'  => 'postsCreate',
+						'label' => 'Add New',
+						'url'   => $url->createAbsoluteUrl( [ 'posts/create' ] ),
+					],
 				]
 			],
 			[

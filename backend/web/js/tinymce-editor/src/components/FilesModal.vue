@@ -12,14 +12,20 @@
 			<BCard
 				v-for="image in images"
 				:key="image.id"
+				:bg-variant="+image.id === +selected.id ? 'success' : 'light'"
 				img-alt="Image"
 				style="max-width: 25rem; min-width: 20rem;"
 				tag="article"
-				text-variant="white"
 				@click="selected = image"
 			>
 				<BCardImg :src="image.url" alt="Image" class="rounded-0" style="max-height: 15rem;"></BCardImg>
-				<BButton variant="success" @click="selected = image">&#128504;</BButton>
+				<BButton
+					v-show="+image.id !== +selected.id"
+					variant="dark"
+					@click="selected = image"
+				>
+					&#128504;
+				</BButton>
 			</BCard>
 		</BModal>
 	</div>
@@ -34,7 +40,12 @@ import "../files-grid.css";
 export default {
 	name: "FilesModal",
 	props: {
-		files: Array,
+		files: {
+			type: Array,
+			default() {
+				return [];
+			}
+		},
 		urlPrefix: String
 	},
 	components: {
@@ -56,9 +67,7 @@ export default {
 			return image;
 		} );
 	},
-	methods: {
-
-	}
+	methods: {}
 }
 </script>
 

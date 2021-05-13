@@ -12,38 +12,42 @@ use yii\web\UploadedFile;
  * @property integer $author
  * @property string $description
  */
-class Files extends ActiveRecord
-{
-    public function attributeLabels()
-    {
-        return [
-            'title' => 'Files Name',
-            'author' => 'Author of file',
-            'description' => 'Description',
-            'url' => 'Image'
-        ];
-    }
+class Files extends ActiveRecord {
+	public function attributeLabels() {
+		return [
+			'title'       => 'Files Name',
+			'author'      => 'Author of file',
+			'description' => 'Description',
+			'url'         => 'Image'
+		];
+	}
 
-    public function rules()
-    {
-        return [
-            [['url'], 'file', 'extensions' => 'jpg, png'],
-        ];
-    }
+	public function rules() {
+		return [
+			[ [ 'url' ], 'file', 'extensions' => 'jpg, png' ],
+		];
+	}
 
-    public function upload()
-    {
-        $name = $this->url->baseName . '.' . $this->url->extension;
-        $path = 'uploads/' . $this->url->baseName . '.' . $this->url->extension;
+	public function upload() {
+		$name = $this->url->baseName . '.' . $this->url->extension;
+		$path = 'uploads/' . $this->url->baseName . '.' . $this->url->extension;
 
-        $this->url->saveAs('@backend/web/' . $path, false);
-        $this->url->saveAs('@frontend/web/' . $path);
+		$this->url->saveAs( '@backend/web/' . $path, false );
+		$this->url->saveAs( '@frontend/web/' . $path );
 
-        return array(
-            'url' => $path,
-            'title' => $name
-        );
-    }
+		return array(
+			'url'   => $path,
+			'title' => $name
+		);
+	}
+
+	public static function findAllValid(): array {
+
+		return self::find()
+		           ->where( [ 'not', [ 'url' => null ] ] )
+		           ->asArray()
+		           ->all();
+	}
 
 
 }

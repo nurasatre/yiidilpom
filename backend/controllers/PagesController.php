@@ -4,7 +4,6 @@ namespace backend\controllers;
 
 use common\models\Files;
 use Yii;
-use yii\web\Controller;
 use common\models\Pages;
 use yii\web\HttpException;
 use yii\web\Response;
@@ -12,11 +11,11 @@ use yii\web\Response;
 /**
  * Site controller
  */
-class PagesController extends Controller {
+class PagesController extends AdminController {
 
 	public $layout = 'admin-main';
 
-	public function actionIndex() {
+	public function actionIndex(): string {
 		$model = new Pages();
 		$posts = $model::find()->asArray()->all();
 
@@ -26,56 +25,20 @@ class PagesController extends Controller {
 		] );
 	}
 
-	public function actionCreate() {
-		$url = \Yii::$app->urlManager;
-
-		return $this->render( 'edit', [
-			'config'  => [
-				'url'  => $url->createAbsoluteUrl( [ 'pages/ajax-save' ] ),
-				'type' => 'POST'
-			],
-			'request' => [
-				'action' => 'save'
-			]
-		] );
+	public function actionCreate(): string {
+		return $this->render( 'edit', $this->getEditorData( 'save' ) );
 	}
 
-	public function actionEdit( $id ) {
-		$url    = \Yii::$app->urlManager;
+	public function actionEdit( $id ): string {
+		$model = Pages::findOne( $id );
 
-		$model  = Pages::findOne( $id );
-
-		$images = Files::find()
-		               ->where( [ 'not', [ 'url' => null ] ] )
-		               ->asArray()
-		               ->all();
-
-		return $this->render( 'edit', [
-			'config' => [
-				'request' => [
-					'url'  => $url->createAbsoluteUrl( [ 'pages/ajax-edit' ] ),
-					'type' => 'POST'
-				],
-				'data'    => [
-					'action'    => 'edit',
-					'model'     => $model->attributes,
-					'images'    => $images,
-					'publicUrl' => $url->createAbsoluteUrl( [ '' ] )
-				]
-			],
-		] );
+		return $this->render( 'edit', $this->getEditorData( 'edit', $model ) );
 	}
 
 	/**
 	 * @return array
-	 * @throws HttpException
 	 */
-	public function actionAjaxSave() {
-		Yii::$app->response->format = Response::FORMAT_JSON;
-		if ( ! Yii::$app->request->isAjax ) {
-			throw new HttpException( 403, Yii::t( 'app', 'You are not allowed to perform this action.' ) );
-		}
-
+	public function actionAjaxSave(): array {
 		$model  = new Pages();
 		$isLoad = $model->load( Yii::$app->request->post(), '' );
 		if ( ! $isLoad ) {
@@ -91,11 +54,7 @@ class PagesController extends Controller {
 			];
 	}
 
-	public function actionAjaxEdit() {
-		Yii::$app->response->format = Response::FORMAT_JSON;
-		if ( ! Yii::$app->request->isAjax ) {
-			throw new HttpException( 403, Yii::t( 'app', 'You are not allowed to perform this action.' ) );
-		}
+	public function actionAjaxEdit(): array {
 		$request = Yii::$app->request->post();
 		$model   = Pages::findOne( (int) $request['id'] );
 

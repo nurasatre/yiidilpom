@@ -4,29 +4,22 @@
 namespace backend\controllers;
 
 use common\models\Files;
-use common\models\Pages;
 use yii\db\IntegrityException;
 use yii\db\StaleObjectException;
 use yii\helpers\Url;
 use yii\web\Controller;
-use yii\web\HttpException;
 use yii\web\Response;
 use yii\web\UploadedFile;
 
 class FilesController extends Controller {
-	public $layout = 'admin-main';
 
-	//public $enableCsrfValidation = false;
+	public $layout = 'admin-main';
 
 	public function actionIndex(): string {
 		$url        = \Yii::$app->urlManager;
 		$csrf_param = \Yii::$app->request->csrfParam;
 		$csrf_token = \Yii::$app->request->csrfToken;
-
-		$images = Files::find()
-		               ->where( [ 'not', [ 'url' => null ] ] )
-		               ->asArray()
-		               ->all();
+		$images = Files::findAllValid();
 
 		return $this->render( 'index', array(
 			'config' => array(

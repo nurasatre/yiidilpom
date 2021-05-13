@@ -5,7 +5,7 @@
    data-toggle="collapse" data-target="#collapse_<?= $item['slug'] ?>" aria-expanded="false"
    aria-controls="collapse_<?= $item['slug'] ?>">
 	<div class="sb-nav-link-icon"><i class="<?= $item['icon'] ?>"></i></div>
-	Pages
+	<?= $item['label'] ?>
 	<div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
 </a>
 <div class="collapse" id="collapse_<?= $item['slug'] ?>" aria-labelledby="headingTwo"
