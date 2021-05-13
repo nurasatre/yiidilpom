@@ -5,83 +5,142 @@ namespace backend\controllers;
 
 use common\models\Files;
 use common\models\Pages;
+use yii\db\IntegrityException;
+use yii\db\StaleObjectException;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\HttpException;
 use yii\web\Response;
 use yii\web\UploadedFile;
 
-class FilesController extends Controller
-{
-    public $layout = 'admin-main';
+class FilesController extends Controller {
+	public $layout = 'admin-main';
 
-    //public $enableCsrfValidation = false;
+	//public $enableCsrfValidation = false;
 
-    public function actionIndex()
-    {
-        $url = \Yii::$app->urlManager;
-        $csrf_param = \Yii::$app->request->csrfParam;
-        $csrf_token = \Yii::$app->request->csrfToken;
+	public function actionIndex(): string {
+		$url        = \Yii::$app->urlManager;
+		$csrf_param = \Yii::$app->request->csrfParam;
+		$csrf_token = \Yii::$app->request->csrfToken;
 
-        $images = Files::find()
-            ->where(['not', ['url' => null]])
-            ->asArray()
-            ->all();
+		$images = Files::find()
+		               ->where( [ 'not', [ 'url' => null ] ] )
+		               ->asArray()
+		               ->all();
 
-        return $this->render('index', array(
-            'config' => array(
-                'save' => array(
-                    'url' => $url->createAbsoluteUrl(['files/ajax-save']),
-                    'method' => 'POST',
-                ),
-                'delete' => array(
-                    'url' => $url->createAbsoluteUrl(['files/ajax-delete']),
-                    'method' => 'POST'
-                ),
-                'csrf' => array(
-                    'param' => $csrf_param,
-                    'token' => $csrf_token,
-                ),
-                'images' => $images,
-                'publicUrl' => $url->createAbsoluteUrl([''])
-            ),
+		return $this->render( 'index', array(
+			'config' => array(
+				'save'      => array(
+					'url'    => $url->createAbsoluteUrl( [ 'files/ajax-save' ] ),
+					'method' => 'POST',
+				),
+				'delete'    => array(
+					'url'    => $url->createAbsoluteUrl( [ 'files/ajax-delete' ] ),
+					'method' => 'POST'
+				),
+				'update'    => array(
+					'url'    => $url->createAbsoluteUrl( [ 'files/ajax-update' ] ),
+					'method' => 'POST'
+				),
+				'csrf'      => array(
+					'param' => $csrf_param,
+					'token' => $csrf_token,
+				),
+				'images'    => $images,
+				'publicUrl' => $url->createAbsoluteUrl( [ '' ] )
+			),
 
-        ));
-    }
+		) );
+	}
 
-    /**
-     * @return array
-     * @throws HttpException
-     */
-    public function actionAjaxSave()
-    {
-        \Yii::$app->response->format = Response::FORMAT_JSON;
-        $files = array();
+	/**
+	 * @return array
+	 */
+	public function actionAjaxSave(): array {
+		\Yii::$app->response->format = Response::FORMAT_JSON;
+		$files                       = array();
 
-        foreach ($_FILES as $param => $file) {
-            $model = new Files();
-            $model->url = UploadedFile::getInstanceByName($param);
+		$duplicates = array();
 
-            if (!$model->validate()) {
-                return ['error' => 'Failed validating...'];
-            }
-            $file = $model->upload();
-            $model->url = $file['url'];
-            $model->title = $file['title'];
+		foreach ( $_FILES as $param => $file ) {
+			$model      = new Files();
+			$model->url = UploadedFile::getInstanceByName( $param );
 
-            $file['url'] = Url::to("@web/{$file['url']}");
+			if ( ! $model->validate() ) {
+				return [ 'error' => 'Failed validating...' ];
+			}
+			$file         = $model->upload();
+			$model->url   = $file['url'];
+			$model->title = $file['title'];
 
-            if (!$model->save()) {
-                return ['error' => 'Failed saving...'];
-            }
+			$file['url'] = Url::to( "@web/{$file['url']}" );
 
-            $files[] = $file;
-        }
+			try {
+				if ( ! $model->save() ) {
+					return [ 'error' => 'Failed saving...' ];
+				}
+				$files[] = $model->attributes;
 
-        return [
-            'success' => 'Saved successfully!',
-            'images' => $files
-        ];
-    }
+			} catch ( IntegrityException $exception ) {
+				if ( '23000' === $exception->getCode() ) {
+					$duplicates[] = $file['title'];
+				}
+			}
+		}
+
+		if ( count( $files ) ) {
+			$message = 'Saved successfully!';
+		} else {
+			$message = 'Failed saving...';
+		}
+
+		if ( $duplicates ) {
+			$message .= ' (Duplicates: ' . implode( ', ', $duplicates ) . ')';
+		}
+
+		return [
+			'success' => $message,
+			'images'  => $files
+		];
+	}
+
+	public function actionAjaxDelete() {
+		\Yii::$app->response->format = Response::FORMAT_JSON;
+
+		$item = \Yii::$app->request->post();
+
+		try {
+			Files::findOne( $item['id'] )->delete();
+		} catch ( StaleObjectException $e ) {
+			return [
+				'error' => 'Failed deleting...',
+			];
+		}
+
+		return [
+			'success' => 'Deleted successfully!'
+		];
+	}
+
+	public function actionAjaxUpdate(): array {
+		\Yii::$app->response->format = Response::FORMAT_JSON;
+
+		$item = \Yii::$app->request->post();
+
+		try {
+			$file        = Files::findOne( $item['id'] );
+			$file->title = $item['title'];
+			$file->update();
+
+		} catch ( \Throwable $e ) {
+			return [
+				'error' => 'Failed updating...',
+			];
+		}
+
+		return [
+			'success' => 'Updated successfully!'
+		];
+	}
 
 }

@@ -1,6 +1,6 @@
 <template>
 	<div class="app">
-		<BootAlert ref="bootAlert" :timer="5" variant="warning">
+		<BootAlert ref="bootAlert" :timer="5" :variant="bootAlertVariant">
 			{{ bootAlertMessage }}
 		</BootAlert>
 		<BFormFile
@@ -12,6 +12,7 @@
 			placeholder="Choose a file or drop it here..."
 			@change="saveFiles"
 		>
+
 			<template slot="file-name" slot-scope="{ names }">
 				<BBadge variant="dark">{{ names[ 0 ] }}</BBadge>
 				<BBadge v-if="names.length > 1" class="ml-1" variant="dark">
@@ -19,35 +20,67 @@
 				</BBadge>
 			</template>
 		</BFormFile>
-		<div id="imagesGrid">
+		<div id="imagesGrid" class="hidden-button files-grid">
 			<BCard
 				v-for="image in images"
-				:key="image.url"
-				:footer="image.title"
+				:key="image.id"
+				bg-variant="info"
 				img-alt="Image"
-				img-top
 				style="max-width: 20rem; min-width: 20rem;"
 				tag="article"
+				text-variant="white"
 			>
-				<BCardImg :src="image.url" alt="Image" style="max-height: 15rem;" class="rounded-0"></BCardImg>
-				<BButton @click="deleteImage( image )">&times;</BButton>
+				<BCardImg :src="image.url" alt="Image" class="rounded-0" style="max-height: 15rem;"></BCardImg>
+				<BFormInput
+					:value="image.title"
+					type="text"
+					@change="onInputFileName( $event, image )"
+				/>
+				<BButton variant="danger" @click="deleteImage( image )">&times;</BButton>
 			</BCard>
 		</div>
 	</div>
 </template>
 
 <script>
-import { BFormFile, BButton, BBadge, BAlert, BCard, BCardImg, BCardFooter } from 'bootstrap-vue'
+import {
+	BFormFile,
+	BButton,
+	BBadge,
+	BAlert,
+	BCard,
+	BCardImg,
+	BCardFooter,
+	BCardText,
+	BFormInput
+} from 'bootstrap-vue'
 import BootAlert from "../components/BootAlert";
+import BootAlertMixin from "../mixins/BootAlertMixin";
+import RemoteMixin from "../mixins/RemoteMixin";
+
+import "../alert.css";
+import "../button.css";
+import "../files-grid.css";
 
 export default {
 	name: "App",
-	components: { BootAlert, BFormFile, BButton, BBadge, BAlert, BCard, BCardImg, BCardFooter },
+	mixins: [ BootAlertMixin, RemoteMixin ],
+	components: {
+		BootAlert,
+		BFormFile,
+		BButton,
+		BBadge,
+		BAlert,
+		BCard,
+		BCardImg,
+		BCardFooter,
+		BCardText,
+		BFormInput,
+	},
 	data() {
 		return {
 			files: [],
 			images: [],
-			bootAlertMessage: 'Success...'
 		};
 	},
 	created() {
@@ -60,8 +93,41 @@ export default {
 		this.images = [ ...images ];
 	},
 	methods: {
-		deleteImage( image ) {
-			console.log( image );
+		onInputFileName( title, { id } ) {
+			const self = this;
+
+			$.ajax( {
+				...this.remote( 'update' ),
+				data: { id, title }
+			} ).done( function ( response ) {
+				if ( response.success ) {
+					self.successAlert( response.success );
+				}
+				else {
+					self.errorAlert( response.error );
+				}
+			} ).fail( function ( response ) {
+				self.errorAlert( response.error );
+			} )
+		},
+		deleteImage( { id } ) {
+			const self = this;
+
+			$.ajax( {
+				...this.remote( 'delete' ),
+				data: { id }
+			} ).done( function ( response ) {
+				if ( response.success ) {
+					self.successAlert( response.success );
+
+					self.images = self.images.filter( image => +id !== +image.id );
+				}
+				else {
+					self.errorAlert( response.error );
+				}
+			} ).fail( function ( response ) {
+				self.errorAlert( response.error );
+			} )
 		},
 		saveFiles( { target: { files } } ) {
 			const self = this;
@@ -88,21 +154,23 @@ export default {
 					try {
 						response = JSON.parse( response );
 					} catch ( e ) {
-						self.showAlert( 'Error parsing' );
+						self.errorAlert( 'Error parsing' );
 						return;
 					}
 
-					if ( response.success && response.images && response.images.length ) {
-						self.setImages( response.images );
-						self.showAlert( response.success );
+					if ( response.success ) {
+						if ( response.images && response.images.length ) {
+							self.setImages( response.images );
+						}
+						self.successAlert( response.success );
 					}
 					else {
-						self.showAlert( response.error );
+						self.errorAlert( response.error );
 					}
 
 				}
 				else {
-					self.showAlert( request.status );
+					self.errorAlert( request.status );
 				}
 
 			};
@@ -112,39 +180,15 @@ export default {
 		setImages( images ) {
 			this.images = [ ...this.images, ...images ];
 		},
-		showAlert( message ) {
-			this.bootAlertMessage = message;
-			this.$refs.bootAlert.show();
-		},
-		remote( prop = '' ) {
-			return prop ? window.filesConfig[ prop ] : window.filesConfig;
-		}
 	}
 }
 </script>
 
 <style scoped>
-#imagesGrid {
-	display: grid;
-	grid: repeat(3, 1fr) / repeat(4, 1fr);
-	grid-gap: 1em;
-	grid-template: repeat(auto-fit, 21rem) / repeat(auto-fit, 21rem);
-	grid-auto-flow: row;
-}
-
-#imagesGrid .card {
-	position: relative;
-}
-
-#imagesGrid .card button {
-	position: absolute;
-	top: 1rem;
-	right: 1rem;
-	opacity: 0;
-	transition: 0.2s ease-in-out;
-}
-
-#imagesGrid .card:hover button{
-	opacity: 1;
+#imagesGrid .card .card-body {
+	padding: 0.75rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
 }
 </style>

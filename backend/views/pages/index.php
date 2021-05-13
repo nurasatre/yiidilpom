@@ -15,7 +15,7 @@ $this->registerJsFile(
     ['depends' => [\yii\web\JqueryAsset::class]]
 );
 $this->registerJsFile(
-    '@web/js/pages/index.js',
+    '@web/js/dist/pages.index.js',
     ['depends' => [\yii\web\JqueryAsset::class]]
 );
 $url = \Yii::$app->urlManager;

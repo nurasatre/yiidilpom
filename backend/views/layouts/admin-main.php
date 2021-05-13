@@ -6,6 +6,7 @@
 
 use backend\assets\AppAsset;
 use yii\helpers\Html;
+use common\helpers\AdminMenu;
 
 AppAsset::register($this);
 $url = \Yii::$app->urlManager;
@@ -45,13 +46,13 @@ $url = \Yii::$app->urlManager;
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="userDropdown">
                 <a class="dropdown-item" href="<?= $url->createAbsoluteUrl(['user']); ?>">Profile</a>
                 <div class="dropdown-divider"></div>
-                   <?= Html::beginForm(['/site/logout'], 'post')
-                   . Html::submitButton(
-                       'Logout (' . Yii::$app->user->identity->username . ')',
-                       ['class' => 'dropdown-item']
-                   )
-                   . Html::endForm()
-                   ?>
+                <?= Html::beginForm(['/site/logout'], 'post')
+                . Html::submitButton(
+                    'Logout (' . Yii::$app->user->identity->username . ')',
+                    ['class' => 'dropdown-item']
+                )
+                . Html::endForm()
+                ?>
             </div>
         </li>
     </ul>
@@ -62,30 +63,7 @@ $url = \Yii::$app->urlManager;
         <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
             <div class="sb-sidenav-menu">
                 <div class="nav">
-                    <div class="sb-sidenav-menu-heading">Core</div>
-                    <a class="nav-link" href="<?= $url->createAbsoluteUrl(['']); ?>">
-                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
-                        Dashboard
-                    </a>
-                    <div class="sb-sidenav-menu-heading">Interface</div>
-                    <a class="nav-link collapsed" href="<?= $url->createAbsoluteUrl(['pages']); ?>"
-                       data-toggle="collapse" data-target="#collapsePages" aria-expanded="false"
-                       aria-controls="collapsePages">
-                        <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                        Pages
-                        <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                    </a>
-                    <div class="collapse" id="collapsePages" aria-labelledby="headingTwo"
-                         data-parent="#sidenavAccordion">
-                        <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
-                            <a class="nav-link" href="<?= $url->createAbsoluteUrl(['pages/create']); ?>">
-                                Add New
-                            </a>
-                            <a class="nav-link" href="<?= $url->createAbsoluteUrl(['pages']); ?>">
-                                View All
-                            </a>
-                        </nav>
-                    </div>
+                    <?= AdminMenu::renderItems(); ?>
                 </div>
             </div>
             <div class="sb-sidenav-footer">

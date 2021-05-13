@@ -3,6 +3,12 @@ namespace common\models;
 
 use yii\db\ActiveRecord;
 
+/**
+ * @property $attachment_id
+ *
+ * Class Pages
+ * @package common\models
+ */
 class Pages extends ActiveRecord
 {
     /*
@@ -22,6 +28,7 @@ class Pages extends ActiveRecord
     {
         return [
             [['title', 'content'], 'required'],
+	        [['attachment_id'], 'integer']
         ];
     }
 }

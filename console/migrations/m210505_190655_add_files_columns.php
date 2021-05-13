@@ -12,7 +12,7 @@ class m210505_190655_add_files_columns extends Migration
      */
     public function safeUp()
     {
-        $this->addColumn( 'files', 'url', $this->string() );
+        $this->addColumn( 'files', 'url', $this->string()->unique() );
         $this->addColumn( 'files', 'mime_type', $this->string() );
     }
 

@@ -1,7 +1,9 @@
 <?php
-/* @var $this yii\web\View */
+/* @var $this yii\web\View
+ * @var $config array
+ */
 
-$this->registerJsVar('filesConfig', $config);
+$this->registerJsVar('currentPageConfig', $config);
 
 $this->registerJsFile(
     '@web/js/dist/files.bundle.js',

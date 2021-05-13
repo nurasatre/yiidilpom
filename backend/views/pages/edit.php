@@ -1,8 +1,7 @@
 <?php
 /* @var $this yii\web\View */
 
-$this->registerJsVar('pageAppConfig', $config);
-$this->registerJsVar('pageRequest', isset( $request ) ? $request : array() );
+$this->registerJsVar('currentPageConfig', $config);
 
 $this->registerJsFile(
     '@web/js/dist/pages.bundle.js',

@@ -1,0 +1,15 @@
+.hidden-button .card {
+    position: relative;
+}
+
+.hidden-button .card button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    opacity: 0;
+    transition: 0.2s ease-in-out;
+}
+
+.hidden-button .card:hover button {
+    opacity: 1;
+}

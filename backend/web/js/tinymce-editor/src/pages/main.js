@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import App from './App.vue'
-import VueNotification from "vue-notification";
+import { ModalPlugin } from "bootstrap-vue";
+import { VBModal } from 'bootstrap-vue'
 
-Vue.use(VueNotification);
+Vue.directive('b-modal', VBModal)
+Vue.use( ModalPlugin );
 
 new Vue({
   el: '#pagesEditor',

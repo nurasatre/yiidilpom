@@ -1,0 +1,10 @@
+.files-grid {
+    display: grid;
+    grid: repeat(3, 1fr) / repeat(4, 1fr);
+    grid-gap: 1em;
+    grid-template: repeat(auto-fit, 21rem) / repeat(auto-fit, 21rem);
+    grid-auto-flow: row;
+    grid-template-rows: auto;
+    align-items: center;
+    justify-content: space-evenly;
+}
