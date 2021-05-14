@@ -15,10 +15,12 @@
 
 <script>
 import BootCard from "../components/BootCard";
+import RemoteMixin from "../mixins/RemoteMixin";
 
 export default {
 	name: "App",
 	components: { BootCard },
+	mixins: [ RemoteMixin ],
 	data() {
 		return {
 			user: {
@@ -28,14 +30,14 @@ export default {
 		};
 	},
 	created() {
-		this.user = { ...this.user, ...window.userConfig };
+		this.user = { ...this.user, ...this.remote( 'model' ) };
 	},
 	methods: {
 		saveUser() {
 			const self = this;
 
 			$.ajax( {
-				...window.userAppConfig,
+				...self.remote( 'save' ),
 				data: self.user
 			} ).done( function ( response ) {
 				if ( response.success ) {

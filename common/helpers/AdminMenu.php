@@ -4,12 +4,18 @@
 namespace common\helpers;
 
 
+use yii\helpers\Html;
+
 class AdminMenu {
 
 	public static $item;
 
 	public static function getItems(): array {
-		$url = \Yii::$app->urlManager;
+		$url        = \Yii::$app->urlManager;
+		$logoutForm = Html::beginForm( [ '/site/logout' ], 'post' ) . Html::submitButton(
+				'Logout (' . \Yii::$app->user->identity->username . ')',
+				[ 'class' => 'nav-link' ] ) . Html::endForm();
+
 
 		return [
 			[
@@ -17,10 +23,10 @@ class AdminMenu {
 				'label' => 'Core'
 			],
 			[
-				'type'  => 'link',
-				'icon'  => 'fas fa-tachometer-alt',
-				'label' => 'Dashboard',
-				'url'   => $url->createAbsoluteUrl( [ '' ] ),
+				'type'     => 'link',
+				'icon'     => 'fas fa-user-circle',
+				'label'    => 'Profile',
+				'url'      => $url->createAbsoluteUrl( [ 'user' ] ),
 			],
 			[
 				'type'  => 'heading',
@@ -63,6 +69,12 @@ class AdminMenu {
 						'url'   => $url->createAbsoluteUrl( [ 'posts/create' ] ),
 					],
 				]
+			],
+			[
+				'type'     => 'link',
+				'icon'     => 'fas fa-comments',
+				'label'    => 'Comments',
+				'url'      => $url->createAbsoluteUrl( [ 'comments' ] ),
 			],
 			[
 				'type'  => 'link',

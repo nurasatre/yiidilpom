@@ -35,6 +35,19 @@ class PagesController extends AdminController {
 		return $this->render( 'edit', $this->getEditorData( 'edit', $model ) );
 	}
 
+	public function actionDelete( $id ) {
+		$model = Pages::findOne( $id );
+		$url   = \Yii::$app->urlManager;
+
+		try {
+			$model->delete();
+		} catch ( \Throwable $e ) {
+			//
+		} finally {
+			$this->redirect( $url->createAbsoluteUrl( [ 'pages' ] ) );
+		}
+	}
+
 	/**
 	 * @return array
 	 */

@@ -26,7 +26,20 @@ class PostsController extends AdminController {
 	public function actionEdit( $id ): string {
 		$model = Posts::findOne( $id );
 
-		return $this->render( 'edit', $this->getEditorData( 'edit', $model )  );
+		return $this->render( 'edit', $this->getEditorData( 'edit', $model ) );
+	}
+
+	public function actionDelete( $id ) {
+		$model = Posts::findOne( $id );
+		$url   = \Yii::$app->urlManager;
+
+		try {
+			$model->delete();
+		} catch ( \Throwable $e ) {
+			//
+		} finally {
+			$this->redirect( $url->createAbsoluteUrl( [ 'posts' ] ) );
+		}
 	}
 
 	public function actionAjaxSave(): array {
@@ -35,6 +48,7 @@ class PostsController extends AdminController {
 		if ( ! $isLoad ) {
 			return [ "error" => "Failed loading data." ];
 		}
+		$model->author = \Yii::$app->user->getId();
 
 		return $model->save()
 			? [

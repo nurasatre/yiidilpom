@@ -1,13 +1,18 @@
 var path = require( 'path' )
 var webpack = require( 'webpack' )
 
+const getEntries = names => {
+	const response = {};
+
+	names.forEach( name => {
+		response[ name ] = `./src/${ name }/main.js`;
+	} );
+
+	return response;
+}
+
 module.exports = {
-	entry: {
-		'user': './src/user/main.js',
-		'pages': './src/pages/main.js',
-		'files': './src/files/main.js',
-		'posts': './src/posts/main.js',
-	},
+	entry: getEntries( [ 'user', 'pages', 'files', 'posts', 'comments' ] ),
 	output: {
 		path: path.resolve( __dirname, '../dist' ),
 		filename: '[name].bundle.js'

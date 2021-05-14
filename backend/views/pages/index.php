@@ -26,27 +26,36 @@ $url = \Yii::$app->urlManager;
             <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                 <thead>
                 <tr>
+                    <th scope="col">Actions</th>
                     <?php foreach ($model as $name => $value): ?>
                         <th scope="col"><?= $model->getAttributeLabel($name) ?></th>
                     <?php endforeach; ?>
-                    <th scope="col">Actions</th>
                 </tr>
                 </thead>
                 <tfoot>
                 <tr>
+                    <th scope="col">Actions</th>
                     <?php foreach ($model as $name => $value): ?>
                         <th scope="col"><?= $model->getAttributeLabel($name) ?></th>
                     <?php endforeach; ?>
-                    <th scope="col">Actions</th>
                 </tr>
                 </tfoot>
                 <tbody>
                 <?php foreach ($posts as $post): ?>
                     <tr>
-                        <?php foreach ($model as $name => $value): ?>
-                            <td><?= $post[$name] ?></td>
-                        <?php endforeach; ?>
-                        <td><a href="<?=$url->createAbsoluteUrl(["pages/edit/{$post['id']}"])?>">Edit</a></td>
+                        <td style="display: flex; justify-content: space-evenly; align-items: flex-start;">
+                            <a href="<?= $url->createAbsoluteUrl( [ "pages/edit/{$post['id']}" ] ) ?>">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <a href="" onclick="if ( confirm( 'Are you sure?' ) ) {
+                                    this.href = '<?= $url->createAbsoluteUrl( [ "pages/delete/{$post['id']}" ] ) ?>';
+                                    }">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </td>
+	                    <?php foreach ( $model as $name => $value ): ?>
+                            <td><?= $model->formatAttribute( $name, $post ) ?></td>
+	                    <?php endforeach; ?>
                     </tr>
                 <?php endforeach; ?>
                 </tbody>

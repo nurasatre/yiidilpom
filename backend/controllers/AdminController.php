@@ -4,7 +4,6 @@
 namespace backend\controllers;
 
 use common\models\Files;
-use yii\base\Action;
 use yii\db\ActiveRecord;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
@@ -16,7 +15,7 @@ abstract class AdminController extends Controller {
 	public $layout = 'admin-main';
 
 	/**
-	 * @param Action $action
+	 * @param $action
 	 *
 	 * @return bool
 	 * @throws HttpException
@@ -56,11 +55,17 @@ abstract class AdminController extends Controller {
 			'config' => [
 				'data'    => $data,
 				'request' => [
-					'url'  => $url->createAbsoluteUrl( [ "{$this->action->controller->id}/ajax-{$action}" ] ),
+					'url' => $this->getRequestUrl( $action ),
 					'type' => 'POST'
 				],
 			],
 		];
+	}
+
+	public function getRequestUrl( $action ): string {
+		$url = \Yii::$app->urlManager;
+
+		return $url->createAbsoluteUrl( [ "{$this->action->controller->id}/ajax-{$action}" ] );
 	}
 
 }

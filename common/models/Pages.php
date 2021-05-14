@@ -1,34 +1,43 @@
-<?php 
+<?php
+
 namespace common\models;
 
-use yii\db\ActiveRecord;
-
 /**
+ * @property $content
+ * @property $title
  * @property $attachment_id
  *
  * Class Pages
  * @package common\models
  */
-class Pages extends ActiveRecord
-{
-    /*
-    public $title;
-    public $content;
-    */
+class Pages extends BaseModel {
 
-    public function attributeLabels()
-    {
-        return [
-            'title' => 'Pages Name',
-            'content' => 'Pages Content'
-        ];
-    }
+	use AttributesFormats;
 
-    public function rules()
-    {
-        return [
-            [['title', 'content'], 'required'],
-	        [['attachment_id'], 'integer']
-        ];
-    }
+	/**
+	 * @return string[]
+	 */
+	public function attributeLabels(): array {
+		return [
+			'title'   => 'Pages Name',
+			'content' => 'Pages Content'
+		];
+	}
+
+	/**
+	 * @return array[]
+	 */
+	public function rules(): array {
+		return [
+			[ [ 'title', 'content' ], 'required' ],
+			[ [ 'attachment_id' ], 'integer' ]
+		];
+	}
+
+	protected function formatAttributesMap(): array {
+		return [
+			'content'       => array( $this, 'getTrimContent' ),
+			'attachment_id' => array( $this, 'getAttachmentName' )
+		];
+	}
 }
