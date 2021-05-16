@@ -12,29 +12,37 @@ class CommentsController extends AdminController {
 		$model = new Comments();
 		$posts = $model::find()->asArray()->all();
 
+		$model->allWithFormat( $posts, [ $model, 'withExcerpt' ] );
+
 		return $this->render( 'index', [
 			'config' => [
-				'posts'   => $posts,
-				'model'   => $model,
-				'request' => [
+				'posts'     => $posts,
+				'model'     => $model,
+				'edit'      => [
 					'type' => 'POST',
 					'url'  => $this->getRequestUrl( 'edit' )
 				],
+				'delete'    => [
+					'type' => 'POST',
+					'url'  => $this->getRequestUrl( 'delete' )
+				],
+				'publicUrl' => $this->getAbsoluteUrl()
 			]
 		] );
 	}
 
 
-	public function actionDelete( $id ) {
-		$model = Comments::findOne( $id );
-		$url   = \Yii::$app->urlManager;
+	public function actionAjaxDelete() {
+		$request = \Yii::$app->request->post();
+		$model   = Comments::findOne( (int) $request['id'] );
 
 		try {
-			$model->delete();
+			return $model->delete()
+				? [ "success" => "Deleted successfully!" ]
+				: [ "error" => "Unsuccessful delete." ];
+
 		} catch ( \Throwable $e ) {
-			//
-		} finally {
-			$this->redirect( $url->createAbsoluteUrl( [ 'comments' ] ) );
+			return [ "error" => "Error catching." ];
 		}
 	}
 
@@ -47,13 +55,18 @@ class CommentsController extends AdminController {
 			return [ "error" => "Failed loading data." ];
 		}
 
-		return $model->save()
-			? [
-				"success" => "Saved successfully!"
-			]
-			: [
-				"error" => "Unsuccessful save."
+		if ( $model->save() ) {
+			$attributes = $model->withFormat( [ $model, 'withExcerpt' ] );
+
+			return [
+				"success" => "Saved successfully!",
+				"model"   => $attributes
 			];
+		}
+
+		return [
+			"error" => "Unsuccessful save."
+		];
 	}
 
 }

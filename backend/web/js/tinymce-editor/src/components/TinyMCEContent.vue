@@ -1,5 +1,5 @@
 <template>
-	<BootCard header="Content">
+	<BootCard :body-classes="[ 'with-tiny-mce' ]" header="Content">
 		<editor
 			v-model="response"
 			:api-key="tinyApi()"
@@ -40,6 +40,9 @@ export default {
 				powerpaste_html_import: 'clean',
 			}
 		};
+	},
+	beforeUpdate() {
+		this.response = this.value;
 	}
 }
 </script>

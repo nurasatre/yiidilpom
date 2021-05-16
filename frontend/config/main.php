@@ -47,7 +47,14 @@ return [
                 '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
             ],
         ],
-
+        'view' => [
+	        'renderers' => [
+		        'tpl' => [
+			        'class' => 'yii\smarty\ViewRenderer',
+			        //'cachePath' => '@runtime/Smarty/cache',
+		        ],
+	        ],
+        ],
     ],
     'params' => $params,
 ];

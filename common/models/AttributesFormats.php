@@ -32,4 +32,8 @@ trait AttributesFormats {
 		return $file ? $file->title : '';
 	}
 
+	public function getCreatedDate( $value, $source ): string {
+		return date( 'F j, Y, g:i a', strtotime( $value ) );
+	}
+
 }

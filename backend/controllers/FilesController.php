@@ -19,11 +19,13 @@ class FilesController extends Controller {
 		$url        = \Yii::$app->urlManager;
 		$csrf_param = \Yii::$app->request->csrfParam;
 		$csrf_token = \Yii::$app->request->csrfToken;
-		$images = Files::findAllValid();
+		$images     = Files::findAllValid();
 
 		return $this->render( 'index', array(
 			'config' => array(
 				'save'      => array(
+					// $url->createAbsoluteUrl( [ '' ] ) --> http://yii.diplom/admin/
+					// $url->createAbsoluteUrl( [ 'files/ajax-save' ] ) --> http://yii.diplom/admin/files/ajax-save
 					'url'    => $url->createAbsoluteUrl( [ 'files/ajax-save' ] ),
 					'method' => 'POST',
 				),
@@ -62,9 +64,11 @@ class FilesController extends Controller {
 			if ( ! $model->validate() ) {
 				return [ 'error' => 'Failed validating...' ];
 			}
-			$file         = $model->upload();
-			$model->url   = $file['url'];
-			$model->title = $file['title'];
+			$file             = $model->upload();
+			$model->url       = $file['url'];
+			$model->title     = $file['title'];
+			$model->author    = \Yii::$app->user->getId();
+			$model->loaded_at = date( 'Y-m-d H:i:s' );
 
 			$file['url'] = Url::to( "@web/{$file['url']}" );
 
@@ -72,6 +76,14 @@ class FilesController extends Controller {
 				if ( ! $model->save() ) {
 					return [ 'error' => 'Failed saving...' ];
 				}
+				/**
+				 * $model->attributes --> array(
+				 *    'id' => 12,
+				 *  'title' => 'Title',
+				 *  'url' => '/uploads/image.jpg',
+				 * ...
+				 * );
+				 */
 				$files[] = $model->attributes;
 
 			} catch ( IntegrityException $exception ) {

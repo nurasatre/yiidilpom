@@ -1,0 +1,7 @@
+.card-body.with-tiny-mce {
+    padding: unset;
+}
+
+.card-body.with-tiny-mce .mce-content-body {
+    padding: 1rem;
+}

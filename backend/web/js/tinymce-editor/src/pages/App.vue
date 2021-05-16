@@ -90,17 +90,8 @@ export default {
 .app {
 	padding: 1rem;
 }
-
-.app > div:not(:last-child) {
-	margin-bottom: 1.5rem;
-}
-
 .app .button-wrapper {
 	text-align: end;
-}
-
-.app .mce-content-body {
-	outline-offset: 20px;
 }
 
 </style>

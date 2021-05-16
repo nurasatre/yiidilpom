@@ -2,6 +2,8 @@ import TinyMCEApiMixin from "./TinyMCEApiMixin";
 import Editor from "@tinymce/tinymce-vue";
 import BootCard from "../components/BootCard";
 
+import "../pretty-tiny-mce.css";
+
 export default {
 	mixins: [ TinyMCEApiMixin ],
 	components: { Editor, BootCard },
@@ -14,6 +16,9 @@ export default {
 		tinyInit: Object
 	},
 	watch: {
+		value() {
+			this.$set( this, 'response', this.value );
+		},
 		response() {
 			this.$emit( 'input', this.response )
 		}

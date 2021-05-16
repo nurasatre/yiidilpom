@@ -26,10 +26,10 @@ abstract class AdminController extends Controller {
 			return parent::beforeAction( $action );
 		}
 
-		\Yii::$app->response->format = Response::FORMAT_JSON;
 		if ( ! \Yii::$app->request->isAjax ) {
 			throw new HttpException( 403, \Yii::t( 'app', 'You are not allowed to perform this action.' ) );
 		}
+		\Yii::$app->response->format = Response::FORMAT_JSON;
 
 		return parent::beforeAction( $action );
 	}
@@ -66,6 +66,12 @@ abstract class AdminController extends Controller {
 		$url = \Yii::$app->urlManager;
 
 		return $url->createAbsoluteUrl( [ "{$this->action->controller->id}/ajax-{$action}" ] );
+	}
+
+	public function getAbsoluteUrl( $action = '' ): string {
+		$url = \Yii::$app->urlManager;
+
+		return $url->createAbsoluteUrl( [ "{$this->action->controller->id}/{$action}" ] );
 	}
 
 }

@@ -2,7 +2,10 @@
 
 namespace common\models;
 
+use yii\helpers\Url;
+
 /**
+ * @property $id
  * @property $content
  * @property $title
  * @property $attachment_id
@@ -37,7 +40,18 @@ class Pages extends BaseModel {
 	protected function formatAttributesMap(): array {
 		return [
 			'content'       => array( $this, 'getTrimContent' ),
-			'attachment_id' => array( $this, 'getAttachmentName' )
+			'attachment_id' => array( $this, 'getAttachmentName' ),
+			'created_at'    => array( $this, 'getCreatedDate' )
 		];
+	}
+
+	public function attachment_url(): ?array {
+		$image = Files::findOne( $this->attachment_id );
+
+		if ( ! $image ) {
+			return null;
+		}
+
+		return [ Url::to( "@web/{$image->url}" ), $image ];
 	}
 }

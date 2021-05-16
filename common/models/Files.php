@@ -7,12 +7,16 @@ use yii\helpers\Url;
 use yii\web\UploadedFile;
 
 /**
- * @property UploadedFile $url
+ * @property UploadedFile|string $url
  * @property string $title
  * @property integer $author
  * @property string $description
+ * @property string $loaded_at
  */
-class Files extends ActiveRecord {
+class Files extends BaseModel {
+
+	use AttributesFormats;
+
 	public function attributeLabels() {
 		return [
 			'title'       => 'Files Name',
@@ -47,6 +51,12 @@ class Files extends ActiveRecord {
 		           ->where( [ 'not', [ 'url' => null ] ] )
 		           ->asArray()
 		           ->all();
+	}
+
+	protected function formatAttributesMap(): array {
+		return [
+			'loaded_at'    => array( $this, 'getCreatedDate' )
+		];
 	}
 
 

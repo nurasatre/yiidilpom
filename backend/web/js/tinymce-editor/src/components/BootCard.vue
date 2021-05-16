@@ -1,19 +1,30 @@
 <template>
-  <div class="card">
-    <div class="card-header">
-      {{ header }}
-    </div>
-    <div class="card-body">
-      <slot></slot>
-    </div>
-  </div>
+	<div class="card mb-xl-3">
+		<div class="card-header">
+			{{ header }}
+		</div>
+		<div :class="bodyClass">
+			<slot></slot>
+		</div>
+	</div>
 </template>
 
 <script>
 export default {
-  name: "BootCard",
-  props: {
-    header: String
-  }
+	name: "BootCard",
+	props: {
+		header: String,
+		bodyClasses: {
+			type: Array,
+			default() {
+				return [];
+			}
+		}
+	},
+	computed: {
+		bodyClass() {
+			return [ 'card-body', ...this.bodyClasses ].join( ' ' );
+		}
+	}
 }
 </script>

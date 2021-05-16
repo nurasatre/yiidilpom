@@ -1,13 +1,18 @@
 <template>
-	<div class="app">
-		<section class="side-left">
-<!--			<TinyMCEContent v-model="pageData.content"/>-->
+	<div class="app"
+		 @keyup.delete="deleteComment"
+		 @keyup.up="moveUp()"
+		 @keyup.down="moveDown()"
+	>
+		<section v-if="currentComment.id" class="side-left">
+			<TinyMCEContent v-model="currentComment.comment_text"/>
 			<div class="button-wrapper">
-				<button class="btn btn-primary btn-lg" type="button" @click="savePage">Save Post</button>
+				<button class="btn btn-success btn-sm" type="button" @click="saveComment">Save Comment</button>
+				<button class="btn btn-danger btn-sm" type="button" @click="deleteComment">Delete Comment</button>
 			</div>
 		</section>
 		<section class="side-right">
-			<b-table hover :items="items"></b-table>
+			<b-table :fields="fields" :items="items" bordered hover @row-clicked="onClickRow"/>
 		</section>
 	</div>
 </template>
@@ -19,62 +24,113 @@ import TinyMCEApiMixin from "../mixins/TinyMCEApiMixin";
 import "../alert.css";
 import TinyMCEContent from "../components/TinyMCEContent";
 import { BTable } from 'bootstrap-vue';
-
-
-const $ = jQuery;
+import AjaxRequest from "../mixins/AjaxRequest";
 
 export default {
 	name: 'app',
-	mixins: [ RemoteMixin, TinyMCEApiMixin ],
+	mixins: [ RemoteMixin, TinyMCEApiMixin, AjaxRequest ],
 	components: {
 		TinyMCEContent,
 		BTable,
 	},
 	data() {
 		return {
-			pageData: {
-				id: 0,
-			},
-			items: [
-				{ age: 40, first_name: 'Dickerson', last_name: 'Macdonald' },
-				{ age: 21, first_name: 'Larsen', last_name: 'Shaw' },
-				{
-					age: 89,
-					first_name: 'Geneva',
-					last_name: 'Wilson',
-					_rowVariant: 'danger'
-				},
-				{
-					age: 40,
-					first_name: 'Thor',
-					last_name: 'MacDonald',
-					_cellVariants: { age: 'info', first_name: 'warning' }
-				},
-				{ age: 29, first_name: 'Dick', last_name: 'Dunlap' }
+			currentComment: {},
+			items: [ ...this.remote( 'posts' ) ],
+			fields: [
+				{ key: '_excerpt', label: 'Comment Excerpt' },
+				'author',
+				{ key: 'post_id', label: 'Post Title' },
+				{ key: 'parent_id', label: 'Parent Excerpt' },
+				'created_at'
 			],
 		}
 	},
-	created() {
-
+	mounted() {
+		this.clearCurrentComment();
 	},
 	methods: {
-		savePage() {
-			const self = this;
+		moveUp() {
+			const comments = JSON.parse( JSON.stringify( this.items ) ).reverse();
 
-			$.ajax( {
-				...this.remote( 'request' ),
-				data: this.pageData
-			} ).done( function ( response ) {
-				if ( response.success ) {
-					self.successAlert( response.success )
+			const item = comments.find( item => +item.id < +this.currentComment.id ) || {};
+			if ( item ) {
+				this.onClickRow( item );
+			}
+		},
+		moveDown() {
+			const item = this.items.find( item => +item.id > +this.currentComment.id );
+			if ( item ) {
+				this.onClickRow( item );
+			}
+		},
+		clearCurrentComment() {
+			this.currentComment = {
+				id: 0,
+				comment_text: 'Click on comment',
+				author: 0,
+				post_id: 0,
+				parent_id: 0,
+				created_at: ''
+			};
+		},
+		onClickRow( item ) {
+			for ( const itemIndex in this.items ) {
+				const { id } = this.items[ itemIndex ];
+
+				if ( id === item.id ) {
+					this.$set( this.items, itemIndex, {
+						...this.items[ itemIndex ],
+						_rowVariant: 'info'
+					} )
 				}
 				else {
-					self.errorAlert( response.error )
+					this.$set( this.items, itemIndex, {
+						...this.items[ itemIndex ],
+						_rowVariant: ''
+					} )
 				}
-			} ).fail( function ( response ) {
-				self.errorAlert( response.error )
-			} )
+			}
+			this.currentComment = { ...item };
+
 		},
+		saveComment() {
+			const self = this;
+			const options = {
+				...this.remote( 'edit' ),
+				data: this.currentComment
+			};
+
+			this.ajax( options, ( type, response ) => {
+				if ( 'success' !== type ) {
+					return;
+				}
+				self.changeComment( self.currentComment.id, response.model );
+			} );
+		},
+		deleteComment() {
+			const self = this;
+			const options = {
+				...this.remote( 'delete' ),
+				data: this.currentComment
+			};
+
+			this.ajax( options, ( type, response ) => {
+				if ( 'success' !== type ) {
+					return;
+				}
+				self.items.splice( +response.id, 1 );
+				self.clearCurrentComment();
+			} );
+		},
+
+		changeComment( id, value ) {
+			this.items.forEach( ( item, index ) => {
+				if ( +item.id === +id ) {
+					this.$set( this.items, index, value )
+				}
+			} )
+		}
 	}
 }
 </script>
@@ -83,21 +139,19 @@ export default {
 .app {
 	padding: 1rem;
 	display: flex;
+	position: relative;
 }
-.app section {
-	flex: 1 1;
-}
-.app section:first-child {
+
+.app section.side-left {
 	margin-right: 1rem;
+	max-width: 30vw;
+	position: fixed;
 }
 
-/*.app .button-wrapper {
-	text-align: end;
-	margin-top: 1rem;
-}*/
-
-.app .mce-content-body {
-	outline-offset: 20px;
+.app section.side-right {
+	max-width: 40vw;
+	position: absolute;
+	right: 0;
 }
 
 </style>

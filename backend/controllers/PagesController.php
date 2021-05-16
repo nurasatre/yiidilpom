@@ -2,18 +2,13 @@
 
 namespace backend\controllers;
 
-use common\models\Files;
 use Yii;
 use common\models\Pages;
-use yii\web\HttpException;
-use yii\web\Response;
 
 /**
  * Site controller
  */
 class PagesController extends AdminController {
-
-	public $layout = 'admin-main';
 
 	public function actionIndex(): string {
 		$model = new Pages();

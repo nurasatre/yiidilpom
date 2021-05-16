@@ -38,7 +38,8 @@ class Posts extends BaseModel {
 		return [
 			'content'       => array( $this, 'getTrimContent' ),
 			'author'        => array( $this, 'getAuthorName' ),
-			'attachment_id' => array( $this, 'getAttachmentName' )
+			'attachment_id' => array( $this, 'getAttachmentName' ),
+			'created_at'    => array( $this, 'getCreatedDate' )
 		];
 	}
 

@@ -118,3 +118,87 @@ a.desc:after {
 .nav > li > form > button.logout:focus {
     outline: none;
 }
+
+section.page-wrapper {
+    display: flex;
+}
+
+section.page-content {
+    padding: 1rem;
+    font-family: "Roboto Light", sans-serif;
+}
+
+section.page-wrapper section {
+    flex: 1;
+}
+
+section.page-attachment {
+    max-width: 20vw;
+    margin-right: 1rem;
+    position: relative;
+    box-sizing: content-box;
+}
+
+section.page-attachment img {
+    max-width: 20vw;
+    height: auto;
+    display: block;
+}
+section.page-attachment h2 {
+    margin: 0;
+    color: white;
+    line-height: 1.1;
+    font-size: 1.2em;
+    font-weight: 200;
+    padding: 10px 20px 10px 10px;
+    border-bottom-right-radius: 20px;
+    background: #E06B2A;
+    position: absolute;
+    top: -5px;
+    left: 0;
+    box-shadow: -3px -1px 3px -3px #E06B2A, 5px 10px 20px -5px hsla(0, 0%, 0%, .4);
+}
+
+section.page-attachment h2 .date {
+    font-family: "Open Sans", sans-serif;
+    font-size: .7em;
+}
+
+.page-title {
+    padding: 20px 0;
+    border-bottom: 2px solid rgba(0,0,0,.05);
+    text-align: center;
+}
+.page-title h1 {
+    padding-bottom: 10px;
+    font-family: 'Merriweather', serif;
+    font-size: 4rem;
+    letter-spacing: 1px;
+    max-width: 320px;
+    width: 100%;
+    position: relative;
+    display: inline-block;
+    color: #465457;
+}
+.page-title h1:before {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    margin-left: -3px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #EE6247;
+    z-index: 2;
+}
+.page-title h1:after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    margin-left: -25%;
+    width: 50%;
+    height: 2px;
+    background: #ECF4F2;
+}

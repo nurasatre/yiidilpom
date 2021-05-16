@@ -8,7 +8,6 @@ use Yii;
 use yii\web\HttpException;
 
 class UserController extends AdminController {
-	public $layout = 'admin-main';
 
 	public function actionIndex() {
 		$url = \Yii::$app->urlManager;

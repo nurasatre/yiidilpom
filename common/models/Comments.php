@@ -2,8 +2,6 @@
 
 namespace common\models;
 
-use yii\db\ActiveRecord;
-
 /**
  * @property integer $id
  * @property string $comment_text
@@ -14,7 +12,9 @@ use yii\db\ActiveRecord;
  * Class Comments
  * @package common\models
  */
-class Comments extends ActiveRecord {
+class Comments extends BaseModel {
+
+	use AttributesFormats;
 
 	public function attributeLabels() {
 		return [
@@ -27,7 +27,18 @@ class Comments extends ActiveRecord {
 
 	public function rules() {
 		return [
-			[ [ 'comment_text', 'author', 'post_id', 'parent_id' ], 'required' ]
+			[ [ 'comment_text', 'author', 'post_id' ], 'required' ]
 		];
+	}
+
+	protected function formatAttributesMap(): array {
+		return [
+			'author'     => array( $this, 'getAuthorName' ),
+			'created_at' => array( $this, 'getCreatedDate' )
+		];
+	}
+
+	public function withExcerpt( array $row ): array {
+		return [ '_excerpt', ( mb_substr( $row['comment_text'], 0, 70 ) . '...' ) ];
 	}
 }

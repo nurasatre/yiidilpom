@@ -1,5 +1,5 @@
 <template>
-	<BootCard header="Title">
+	<BootCard header="Title" :body-classes="[ 'with-tiny-mce' ]">
 		<editor
 			v-model="response"
 			:api-key="tinyApi()"
