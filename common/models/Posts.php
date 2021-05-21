@@ -19,6 +19,7 @@ namespace common\models;
 class Posts extends BaseModel {
 
 	use AttributesFormats;
+	use GetAttachmentUrl;
 
 	public function attributeLabels(): array {
 		return [

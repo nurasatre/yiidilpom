@@ -6,3 +6,5 @@ new Vue({
   el: '#filesEditor',
   render: h => h(App)
 })
+
+

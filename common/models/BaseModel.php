@@ -8,6 +8,8 @@ use yii\db\ActiveRecord;
 
 abstract class BaseModel extends ActiveRecord {
 
+	private $_dynamicAttrsMap = array();
+
 	protected function formatAttributesMap(): array {
 		return [];
 	}
@@ -19,7 +21,12 @@ abstract class BaseModel extends ActiveRecord {
 	 * @return mixed
 	 */
 	public function formatAttribute( string $name, array $source = array() ) {
-		$map = $this->formatAttributesMap();
+		if ( ! empty( $this->_dynamicAttrsMap ) ) {
+			$map = $this->_dynamicAttrsMap;
+		} else {
+			$map = $this->formatAttributesMap();
+		}
+
 
 		if ( ! $source ) {
 			$source = $this->attributes;
@@ -28,27 +35,26 @@ abstract class BaseModel extends ActiveRecord {
 			return $source[ $name ];
 		}
 
-
-		/**
-		 * call_user_func( 'printf' );
-		 *
-		 */
-
 		return ( isset( $map[ $name ] ) && is_callable( $map[ $name ] ) )
 			? call_user_func( $map[ $name ], $source[ $name ], $source )
 			: $source[ $name ];
 	}
 
-	public function allWithFormat( &$rows, callable $callableModify = null ): void {
+	public function allWithFormat( &$rows, callable $callableModify = null ): BaseModel {
 		foreach ( $rows as $index => $row ) {
 			if ( $callableModify ) {
-				[ $prop, $value ] = call_user_func( $callableModify, $row );
-				$rows[ $index ][ $prop ] = $value;
+				$props = call_user_func( $callableModify, $row );
+
+				foreach ( $props as $prop => $value ) {
+					$rows[ $index ][ $prop ] = $value;
+				}
 			}
 			foreach ( $row as $attribute => $value ) {
 				$rows[ $index ][ $attribute ] = $this->formatAttribute( $attribute, $row );
 			}
 		}
+
+		return $this;
 	}
 
 	public function withFormat( callable $callableModify = null ): array {
@@ -62,5 +68,17 @@ abstract class BaseModel extends ActiveRecord {
 		}
 
 		return $currentValues;
+	}
+
+	public function attrsMap( $map ): BaseModel {
+		$this->_dynamicAttrsMap = array_merge( $this->formatAttributesMap(), $map );
+
+		return $this;
+	}
+
+	public function clearAttrsMap(): BaseModel {
+		$this->_dynamicAttrsMap = array();
+
+		return $this;
 	}
 }

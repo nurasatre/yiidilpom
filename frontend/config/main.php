@@ -8,6 +8,7 @@ $params = array_merge(
 
 return [
     'id' => 'app-frontend',
+    'name' => 'CMS',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
@@ -46,14 +47,6 @@ return [
                 '<controller:\w+>/<action:\w+>/' => '<controller>/<action>',
                 '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
             ],
-        ],
-        'view' => [
-	        'renderers' => [
-		        'tpl' => [
-			        'class' => 'yii\smarty\ViewRenderer',
-			        //'cachePath' => '@runtime/Smarty/cache',
-		        ],
-	        ],
         ],
     ],
     'params' => $params,

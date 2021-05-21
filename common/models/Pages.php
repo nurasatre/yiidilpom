@@ -8,7 +8,7 @@ use yii\helpers\Url;
  * @property $id
  * @property $content
  * @property $title
- * @property $attachment_id
+ * @property integer $attachment_id
  *
  * Class Pages
  * @package common\models
@@ -16,6 +16,7 @@ use yii\helpers\Url;
 class Pages extends BaseModel {
 
 	use AttributesFormats;
+	use GetAttachmentUrl;
 
 	/**
 	 * @return string[]
@@ -43,15 +44,5 @@ class Pages extends BaseModel {
 			'attachment_id' => array( $this, 'getAttachmentName' ),
 			'created_at'    => array( $this, 'getCreatedDate' )
 		];
-	}
-
-	public function attachment_url(): ?array {
-		$image = Files::findOne( $this->attachment_id );
-
-		if ( ! $image ) {
-			return null;
-		}
-
-		return [ Url::to( "@web/{$image->url}" ), $image ];
 	}
 }

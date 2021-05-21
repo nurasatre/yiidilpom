@@ -6,11 +6,10 @@
 
 use common\widgets\Alert;
 use frontend\assets\AppAsset;
-use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\helpers\Html;
 use yii\web\View;
-use yii\widgets\Breadcrumbs;
+use common\helpers\BreadCrumbsModify;
 
 AppAsset::register( $this );
 ?>
@@ -30,19 +29,12 @@ AppAsset::register( $this );
 
 <div class="wrap">
 	<?php
-	NavBar::begin( [
-		               'brandLabel' => Yii::$app->name,
-		               'brandUrl'   => Yii::$app->homeUrl,
-		               'options'    => [
-			               'class' => 'navbar-inverse navbar-fixed-top',
-		               ],
-	               ] );
 	$menuItems = [
-		[ 'label' => 'Home', 'url' => [ '/site/index' ] ],
-		[ 'label' => 'About', 'url' => [ '/site/about' ] ],
-		[ 'label' => 'Contact', 'url' => [ '/site/contact' ] ],
-		[ 'label' => 'Pages', 'url' => [ 'pages' ] ],
-		[ 'label' => 'Posts', 'url' => [ 'posts' ] ],
+		[ 'label' => 'Головна', 'url' => [ '/site/index' ] ],
+		[ 'label' => 'Про нас', 'url' => [ '/site/about' ] ],
+		[ 'label' => 'Послуги', 'url' => [ '/site/service' ] ],
+		[ 'label' => 'Блог', 'url' => [ '/posts' ] ],
+		[ 'label' => 'Контакти', 'url' => [ '/site/contact' ] ],
 	];
 	if ( Yii::$app->user->isGuest ) {
 		$menuItems[] = [ 'label' => 'Signup', 'url' => [ '/site/signup' ] ];
@@ -57,16 +49,32 @@ AppAsset::register( $this );
 		               . Html::endForm()
 		               . '</li>';
 	}
-	echo Nav::widget( [
-		                  'options' => [ 'class' => 'navbar-nav navbar-right' ],
-		                  'items'   => $menuItems,
-	                  ] );
-	NavBar::end();
 	?>
-
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="<?= Yii::$app->homeUrl ?>"><?= Yii::$app->name ?></a>
+            <div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNavAltMarkup">
+                <div class="navbar-nav d-flex align-items-center">
+					<?php foreach ( $menuItems as $menuItem ): ?>
+						<?php if ( isset( $menuItem['url'] ) ): ?>
+                            <a class="nav-link <?= $menuItem['url'] === $this->context->route ? 'active' : '' ?>"
+                               href="<?= \Yii::$app->urlManager->createAbsoluteUrl( $menuItem['url'] ) ?>">
+								<?= $menuItem['label'] ?>
+                            </a>
+						<?php else: echo $menuItem; ?>
+						<?php endif; ?>
+					<?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+    </nav>
     <div class="container">
-		<?= Breadcrumbs::widget( [
-			                         'links' => isset( $this->params['breadcrumbs'] ) ? $this->params['breadcrumbs'] : [],
+		<?= BreadCrumbsModify::widget( [
+			                         'links'    => isset( $this->params['breadcrumbs'] ) ? $this->params['breadcrumbs'] : [],
+			                         'homeLink' => [
+				                         'label' => 'Головна',
+				                         'url'   => \yii\helpers\Url::to( '/' )
+			                         ],
 		                         ] ) ?>
 		<?= Alert::widget() ?>
 		<?= $content ?>
@@ -77,7 +85,7 @@ AppAsset::register( $this );
     <div class="container">
         <p class="pull-left">&copy; <?= Html::encode( Yii::$app->name ) ?> <?= date( 'Y' ) ?></p>
 
-        <p class="pull-right"><?= Yii::powered() ?></p>
+        <p class="pull-right">Powered by noora</p>
     </div>
 </footer>
 
