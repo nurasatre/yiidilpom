@@ -13,7 +13,6 @@ class AppAsset extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
     	'https://fonts.googleapis.com/css?family=Muli:300,400,700,900',
-	    //'https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css',
 	    'css/bootstrap.min.css',
 	    'css/theme-style.css',
         'css/site.css',

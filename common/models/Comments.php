@@ -41,4 +41,8 @@ class Comments extends BaseModel {
 	public function withExcerpt( array $row ): array {
 		return [ '_excerpt' => ( mb_substr( $row['comment_text'], 0, 70 ) . '...' ) ];
 	}
+
+	public function getAllById( int $sourceId ): array {
+
+	}
 }
