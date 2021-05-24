@@ -21,7 +21,7 @@ class PostsView extends View {
                 <span class="mx-1">/</span>
                 <a href="#"><?= $source['author'] ?></a>
             </div>
-            <h3 class="post-heading"><a href="<?= $source['__view_url'] ?>"><?= $source['title'] ?></a></h3>
+            <h3 class="post-heading"><a href="<?= $source['__view_url'] ?>"><?= strip_tags( $source['title'] ) ?></a></h3>
         </div>
 		<?php
 	}

@@ -10,9 +10,9 @@ use common\models\Pages;
 use yii\helpers\Url;
 use yii\web\View;
 
-$this->title                   = $model->title;
+$this->title                   = strip_tags( $model->title );
 $this->params['breadcrumbs'][] = array(
-	'label' => 'Pages',
+	'label' => 'Сторінки',
 	'url'   => Url::toRoute( '/pages/' )
 );
 $this->params['breadcrumbs'][] = array(

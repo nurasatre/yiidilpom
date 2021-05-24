@@ -6,7 +6,6 @@
 
 use common\widgets\Alert;
 use frontend\assets\AppAsset;
-use yii\bootstrap\NavBar;
 use yii\helpers\Html;
 use yii\web\View;
 use common\helpers\BreadCrumbsModify;
@@ -31,7 +30,7 @@ AppAsset::register( $this );
 	<?php
 	$menuItems = [
 		[ 'label' => 'Головна', 'url' => [ '/site/index' ] ],
-		[ 'label' => 'Про нас', 'url' => [ '/site/about' ] ],
+		[ 'label' => 'Про нас', 'url' => [ '/pages/view/33' ] ],
 		[ 'label' => 'Послуги', 'url' => [ '/site/service' ] ],
 		[ 'label' => 'Блог', 'url' => [ '/posts' ] ],
 		[ 'label' => 'Контакти', 'url' => [ '/site/contact' ] ],
@@ -43,7 +42,7 @@ AppAsset::register( $this );
 		$menuItems[] = '<li>'
 		               . Html::beginForm( [ '/site/logout' ], 'post' )
 		               . Html::submitButton(
-				'Logout (' . Yii::$app->user->identity->username . ')',
+				'Вийти (' . Yii::$app->user->identity->username . ')',
 				[ 'class' => 'btn btn-link logout' ]
 			)
 		               . Html::endForm()
@@ -89,7 +88,7 @@ AppAsset::register( $this );
     </div>
 </footer>
 
-<?php $this->endBody() ?>
+<?php $this->endBody(); ?>
 </body>
 </html>
 <?php $this->endPage() ?>

@@ -4,35 +4,41 @@
 namespace frontend\controllers;
 
 
+use common\components\ControllerTrait;
 use common\models\Comments;
 use yii\web\Controller;
 
 class CommentsController extends Controller {
 
-	public function actionAddNew() {
+	use ControllerTrait;
+
+	public function actionAjaxAdd(): array {
 		if ( \Yii::$app->user->isGuest || empty( $_POST ) ) {
-			\Yii::$app->session->setFlash( 'error', 'You cannot perform this action.' );
-			$this->redirect( '/posts' );
+			return [ 'error' => 'You are not allowed to perform this action.' ];
 		}
 		$comment = new Comments();
-		$isLoad  = $comment->load( \Yii::$app->request->post(), 'comment' );
+		$isLoad  = $comment->load( \Yii::$app->request->post(), '' );
 
 		if ( ! $isLoad ) {
-			\Yii::$app->session->setFlash( 'error', 'Error loading request' );
-			$this->redirect( '/posts' );
-
-			return;
+			return [ 'error' => 'Error loading request' ];
 		}
+		$comment->author = \Yii::$app->user->getId();
 
 		if ( ! $comment->validate() || ! $comment->save() ) {
-			\Yii::$app->session->setFlash( 'error', 'Error while saving a comment' );
-			$this->redirect( '/posts' );
-
-			return;
+			return [ 'error' => 'Error while saving a comment' ];
 		}
+		$comments = Comments::find()
+		                    ->where( [ 'post_id' => $comment->post_id ] )
+		                    ->orderBy( [ 'created_at' => SORT_DESC ] )
+		                    ->asArray()
+		                    ->all();
 
-		\Yii::$app->session->setFlash( 'success', 'Your comment has been saved!' );
-		$this->redirect( "/posts/view/{$comment->post_id}" );
+		$comment->allWithFormat( $comments );
+
+		return [
+			'success'  => 'Your comment has been saved!',
+			'comments' => $comments
+		];
 	}
 
 }

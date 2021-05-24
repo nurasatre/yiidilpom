@@ -2,8 +2,6 @@
 
 namespace common\models;
 
-use yii\helpers\Url;
-
 /**
  * @property $id
  * @property $content
@@ -40,9 +38,12 @@ class Pages extends BaseModel {
 
 	protected function formatAttributesMap(): array {
 		return [
+			'title'         => array( $this, 'getAttachedLink' ),
 			'content'       => array( $this, 'getTrimContent' ),
 			'attachment_id' => array( $this, 'getAttachmentName' ),
 			'created_at'    => array( $this, 'getCreatedDate' )
 		];
 	}
+
+
 }

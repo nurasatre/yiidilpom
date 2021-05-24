@@ -15,11 +15,21 @@ class UserController extends AdminController {
 		return $this->render( 'index', array(
 			'config' => array(
 				'model' => Yii::$app->user->identity,
-				'save' => array(
+				'save'  => array(
 					'method' => 'POST',
 					'url'    => $url->createAbsoluteUrl( [ 'user/ajax-save' ] ),
 				),
 			),
+		) );
+	}
+
+	public function actionAll() {
+		$model = new User();
+		$users = $model::find()->asArray()->all();
+
+		return $this->render( 'all', array(
+			'model' => $model,
+			'users'  => $users,
 		) );
 	}
 

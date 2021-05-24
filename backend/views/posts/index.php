@@ -33,7 +33,7 @@ $url = \Yii::$app->urlManager;
                 <thead>
                 <tr>
                     <th scope="col">Actions</th>
-					<?php foreach ( $model as $name => $value ): ?>
+					<?php foreach ( $model->iterateAttributes() as $name ): ?>
                         <th scope="col"><?= $model->getAttributeLabel( $name ) ?></th>
 					<?php endforeach; ?>
                 </tr>
@@ -41,7 +41,7 @@ $url = \Yii::$app->urlManager;
                 <tfoot>
                 <tr>
                     <th scope="col">Actions</th>
-					<?php foreach ( $model as $name => $value ): ?>
+					<?php foreach ( $model->iterateAttributes() as $name ): ?>
                         <th scope="col"><?= $model->getAttributeLabel( $name ) ?></th>
 					<?php endforeach; ?>
                 </tr>
@@ -59,8 +59,8 @@ $url = \Yii::$app->urlManager;
                                 <i class="fas fa-trash"></i>
                             </a>
                         </td>
-						<?php foreach ( $model as $name => $value ): ?>
-                            <td><?= $model->formatAttribute( $name, $post ) ?></td>
+						<?php foreach ( $model->iterateAttributes() as $name ): ?>
+                            <td><?= $post[ $name ] ?></td>
 						<?php endforeach; ?>
                     </tr>
 				<?php endforeach; ?>

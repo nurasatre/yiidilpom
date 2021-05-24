@@ -5,6 +5,7 @@ namespace frontend\controllers;
 
 
 use common\helpers\PostsView;
+use common\models\Comments;
 use common\models\Files;
 use common\models\Posts;
 use yii\web\Controller;
@@ -56,10 +57,34 @@ class PostsController extends Controller {
 	}
 
 	public function actionView( $id ) {
-		$model = Posts::findOne( $id );
+		$model   = Posts::findOne( $id );
+		$url     = \Yii::$app->urlManager;
+		$comment = new Comments();
+
+		$comments = $comment::find()
+		                    ->where( [ 'post_id' => $id ] )
+		                    ->orderBy( [ 'created_at' => SORT_DESC ] )
+		                    ->asArray()
+		                    ->all();
+
+		$comment->allWithFormat( $comments );
+
 
 		return $this->render( 'view', [
-			'model' => $model
+			'model'    => $model,
+			'comments' => [
+				'activeUser' => \Yii::$app->user->getId(),
+				'post'       => $model->attributes,
+				'items'      => $comments,
+				'ajaxAdd'    => [
+					'url'    => $url->createAbsoluteUrl( [ 'comments/ajax-add' ] ),
+					'method' => 'POST',
+				],
+				'csrf'       => [
+					'name'  => \Yii::$app->request->csrfParam,
+					'value' => \Yii::$app->request->getCsrfToken()
+				],
+			]
 		] );
 	}
 }

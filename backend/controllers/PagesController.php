@@ -2,8 +2,8 @@
 
 namespace backend\controllers;
 
-use Yii;
 use common\models\Pages;
+use Yii;
 
 /**
  * Site controller
@@ -13,6 +13,12 @@ class PagesController extends AdminController {
 	public function actionIndex(): string {
 		$model = new Pages();
 		$posts = $model::find()->asArray()->all();
+
+		$model->allWithFormat( $posts, function ( $attrs ) {
+			return [
+				'__view_url' => \Yii::$app->urlFrontEnd->createAbsoluteUrl( [ "/pages/view/{$attrs['id']}" ] )
+			];
+		} );
 
 		return $this->render( 'index', [
 			'posts' => $posts,

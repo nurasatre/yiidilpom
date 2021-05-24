@@ -9,9 +9,14 @@ use common\models\Posts;
 class PostsController extends AdminController {
 
 	public function actionIndex(): string {
-
 		$model = new Posts();
 		$posts = $model::find()->asArray()->all();
+
+		$model->allWithFormat( $posts, function ( $attrs ) {
+			return [
+				'__view_url' => \Yii::$app->urlFrontEnd->createAbsoluteUrl( [ "/posts/view/{$attrs['id']}" ] )
+			];
+		} );
 
 		return $this->render( 'index', [
 			'posts' => $posts,

@@ -14,6 +14,16 @@ abstract class BaseModel extends ActiveRecord {
 		return [];
 	}
 
+	protected function visibleAttributes(): array {
+		return [];
+	}
+
+	public function iterateAttributes(): array {
+		$visible = $this->visibleAttributes();
+
+		return $visible ? $visible : array_keys( $this->attributes );
+	}
+
 	/**
 	 * @param $name string Name of attribute
 	 * @param $source array Current source row
@@ -50,7 +60,7 @@ abstract class BaseModel extends ActiveRecord {
 				}
 			}
 			foreach ( $row as $attribute => $value ) {
-				$rows[ $index ][ $attribute ] = $this->formatAttribute( $attribute, $row );
+				$rows[ $index ][ $attribute ] = $this->formatAttribute( $attribute, $rows[ $index ] );
 			}
 		}
 
@@ -60,8 +70,11 @@ abstract class BaseModel extends ActiveRecord {
 	public function withFormat( callable $callableModify = null ): array {
 		$currentValues = $this->attributes;
 		if ( $callableModify ) {
-			[ $prop, $value ] = call_user_func( $callableModify, $currentValues );
-			$currentValues[ $prop ] = $value;
+			$props = call_user_func( $callableModify, $currentValues );
+
+			foreach ( $props as $prop => $value ) {
+				$currentValues[ $prop ] = $value;
+			}
 		}
 		foreach ( $currentValues as $attribute => $value ) {
 			$currentValues[ $attribute ] = $this->formatAttribute( $attribute, $currentValues );

@@ -29,6 +29,12 @@ class AdminMenu {
 				'url'      => $url->createAbsoluteUrl( [ 'user' ] ),
 			],
 			[
+				'type'     => 'link',
+				'icon'     => 'fas fa-user-friends',
+				'label'    => 'Users',
+				'url'      => $url->createAbsoluteUrl( [ 'user/all' ] ),
+			],
+			[
 				'type'  => 'heading',
 				'label' => 'Interface'
 			],

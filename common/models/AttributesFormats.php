@@ -36,4 +36,12 @@ trait AttributesFormats {
 		return date( 'F j, Y, g:i a', strtotime( $value ) );
 	}
 
+	public function getAttachedLink( $value, $source ): string {
+		return sprintf(
+			'<a href="%s" target="_blank">%s</a>',
+			$source['__view_url'],
+			strip_tags( $value )
+		);
+	}
+
 }

@@ -37,10 +37,21 @@ class Posts extends BaseModel {
 
 	protected function formatAttributesMap(): array {
 		return [
+			'title'         => array( $this, 'getAttachedLink' ),
 			'content'       => array( $this, 'getTrimContent' ),
 			'author'        => array( $this, 'getAuthorName' ),
 			'attachment_id' => array( $this, 'getAttachmentName' ),
 			'created_at'    => array( $this, 'getCreatedDate' )
+		];
+	}
+
+	protected function visibleAttributes(): array {
+		return [
+			'title',
+			'content',
+			'author',
+			'attachment_id',
+			'created_at'
 		];
 	}
 

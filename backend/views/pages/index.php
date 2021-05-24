@@ -2,21 +2,21 @@
 
 /* @var $this yii\web\View */
 
-$this->title = 'Posts Index';
+$this->title = 'Pages';
 $this->registerCssFile(
-    'https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css'
+	'https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css'
 );
 $this->registerJsFile(
-    'https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js',
-    ['depends' => [\yii\web\JqueryAsset::class]]
+	'https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js',
+	[ 'depends' => [ \yii\web\JqueryAsset::class ] ]
 );
 $this->registerJsFile(
-    'https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js',
-    ['depends' => [\yii\web\JqueryAsset::class]]
+	'https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js',
+	[ 'depends' => [ \yii\web\JqueryAsset::class ] ]
 );
 $this->registerJsFile(
-    '@web/js/dist/pages.index.js',
-    ['depends' => [\yii\web\JqueryAsset::class]]
+	'@web/js/dist/pages.index.js',
+	[ 'depends' => [ \yii\web\JqueryAsset::class ] ]
 );
 $url = \Yii::$app->urlManager;
 ?>
@@ -27,21 +27,21 @@ $url = \Yii::$app->urlManager;
                 <thead>
                 <tr>
                     <th scope="col">Actions</th>
-                    <?php foreach ($model as $name => $value): ?>
-                        <th scope="col"><?= $model->getAttributeLabel($name) ?></th>
-                    <?php endforeach; ?>
+					<?php foreach ( $model->iterateAttributes() as $name ): ?>
+                        <th scope="col"><?= $model->getAttributeLabel( $name ) ?></th>
+					<?php endforeach; ?>
                 </tr>
                 </thead>
                 <tfoot>
                 <tr>
                     <th scope="col">Actions</th>
-                    <?php foreach ($model as $name => $value): ?>
-                        <th scope="col"><?= $model->getAttributeLabel($name) ?></th>
-                    <?php endforeach; ?>
+					<?php foreach ( $model->iterateAttributes() as $name ): ?>
+                        <th scope="col"><?= $model->getAttributeLabel( $name ) ?></th>
+					<?php endforeach; ?>
                 </tr>
                 </tfoot>
                 <tbody>
-                <?php foreach ($posts as $post): ?>
+				<?php foreach ( $posts as $post ): ?>
                     <tr>
                         <td style="display: flex; justify-content: space-evenly; align-items: flex-start;">
                             <a href="<?= $url->createAbsoluteUrl( [ "pages/edit/{$post['id']}" ] ) ?>">
@@ -53,11 +53,11 @@ $url = \Yii::$app->urlManager;
                                 <i class="fas fa-trash"></i>
                             </a>
                         </td>
-	                    <?php foreach ( $model as $name => $value ): ?>
-                            <td><?= $model->formatAttribute( $name, $post ) ?></td>
-	                    <?php endforeach; ?>
+						<?php foreach ( $model->iterateAttributes() as $name ): ?>
+                            <td><?= $post[ $name ] ?></td>
+						<?php endforeach; ?>
                     </tr>
-                <?php endforeach; ?>
+				<?php endforeach; ?>
                 </tbody>
             </table>
         </div>

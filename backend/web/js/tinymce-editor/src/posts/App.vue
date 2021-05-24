@@ -11,9 +11,6 @@
 		<div class="button-wrapper">
 			<button class="btn btn-primary btn-lg" type="button" @click="savePage">Save Post</button>
 		</div>
-		<BootAlert ref="bootAlert" :timer="5" :variant="bootAlertVariant">
-			{{ bootAlertMessage }}
-		</BootAlert>
 	</div>
 </template>
 
@@ -28,13 +25,15 @@ import "../alert.css";
 import AttachmentFieldCard from "../components/AttachmentFieldCard";
 import TinyMCETitle from "../components/TinyMCETitle";
 import TinyMCEContent from "../components/TinyMCEContent";
+import AjaxRequest from "../mixins/AjaxRequest";
+import ToastPluginMixin from "../mixins/ToastPluginMixin";
 
 
 const $ = jQuery;
 
 export default {
 	name: 'app',
-	mixins: [ BootAlertMixin, RemoteMixin, TinyMCEApiMixin ],
+	mixins: [ AjaxRequest, ToastPluginMixin, RemoteMixin, TinyMCEApiMixin ],
 	components: {
 		TinyMCEContent,
 		TinyMCETitle,
@@ -65,21 +64,10 @@ export default {
 			this.$set( this.pageData, 'attachment_id', +selected.id );
 		},
 		savePage() {
-			const self = this;
-
-			$.ajax( {
+			this.ajax( {
 				...this.remote( 'request' ),
 				data: this.pageData
-			} ).done( function ( response ) {
-				if ( response.success ) {
-					self.successAlert( response.success )
-				}
-				else {
-					self.errorAlert( response.error )
-				}
-			} ).fail( function ( response ) {
-				self.errorAlert( response.error )
-			} )
+			} );
 		},
 	}
 }

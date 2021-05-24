@@ -1,8 +1,5 @@
 <template>
 	<div class="app">
-		<BootAlert ref="bootAlert" :timer="5" :variant="bootAlertVariant">
-			{{ bootAlertMessage }}
-		</BootAlert>
 		<BFormFile
 			accept="image/*"
 			class="mb-2"
@@ -43,30 +40,19 @@
 </template>
 
 <script>
-import {
-	BFormFile,
-	BButton,
-	BBadge,
-	BAlert,
-	BCard,
-	BCardImg,
-	BCardFooter,
-	BCardText,
-	BFormInput
-} from 'bootstrap-vue'
-import BootAlert from "../components/BootAlert";
-import BootAlertMixin from "../mixins/BootAlertMixin";
+import { BAlert, BBadge, BButton, BCard, BCardFooter, BCardImg, BCardText, BFormFile, BFormInput } from 'bootstrap-vue'
 import RemoteMixin from "../mixins/RemoteMixin";
 
 import "../alert.css";
 import "../button.css";
 import "../files-grid.css";
+import AjaxRequest from "../mixins/AjaxRequest";
+import ToastPluginMixin from "../mixins/ToastPluginMixin";
 
 export default {
 	name: "App",
-	mixins: [ BootAlertMixin, RemoteMixin ],
+	mixins: [ RemoteMixin, ToastPluginMixin, AjaxRequest ],
 	components: {
-		BootAlert,
 		BFormFile,
 		BButton,
 		BBadge,
@@ -94,40 +80,23 @@ export default {
 	},
 	methods: {
 		onInputFileName( title, { id } ) {
-			const self = this;
-
-			$.ajax( {
+			this.ajax( {
 				...this.remote( 'update' ),
 				data: { id, title }
-			} ).done( function ( response ) {
-				if ( response.success ) {
-					self.successAlert( response.success );
-				}
-				else {
-					self.errorAlert( response.error );
-				}
-			} ).fail( function ( response ) {
-				self.errorAlert( response.error );
-			} )
+			} );
 		},
 		deleteImage( { id } ) {
-			const self = this;
-
-			$.ajax( {
+			const options = {
 				...this.remote( 'delete' ),
 				data: { id }
-			} ).done( function ( response ) {
-				if ( response.success ) {
-					self.successAlert( response.success );
+			};
 
-					self.images = self.images.filter( image => +id !== +image.id );
+			this.ajax( options, ( type, response ) => {
+				if ( 'success' !== type ) {
+					return;
 				}
-				else {
-					self.errorAlert( response.error );
-				}
-			} ).fail( function ( response ) {
-				self.errorAlert( response.error );
-			} )
+				this.images = this.images.filter( image => +id !== +image.id );
+			} );
 		},
 		saveFiles( { target: { files } } ) {
 			const self = this;
@@ -154,7 +123,7 @@ export default {
 					try {
 						response = JSON.parse( response );
 					} catch ( e ) {
-						self.errorAlert( 'Error parsing' );
+						self.toast( 'Error parsing', 'danger' );
 						return;
 					}
 
@@ -162,15 +131,15 @@ export default {
 						if ( response.images && response.images.length ) {
 							self.setImages( response.images );
 						}
-						self.successAlert( response.success );
+						self.toast( response.success, 'success' );
 					}
 					else {
-						self.errorAlert( response.error );
+						self.toast( response.error, 'danger' );
 					}
 
 				}
 				else {
-					self.errorAlert( request.status );
+					self.toast( request.status, 'danger' );
 				}
 
 			};
