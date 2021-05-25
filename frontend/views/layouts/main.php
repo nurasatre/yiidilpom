@@ -31,13 +31,13 @@ AppAsset::register( $this );
 	$menuItems = [
 		[ 'label' => 'Головна', 'url' => [ '/site/index' ] ],
 		[ 'label' => 'Про нас', 'url' => [ '/pages/view/33' ] ],
-		[ 'label' => 'Послуги', 'url' => [ '/site/service' ] ],
+		[ 'label' => 'Послуги', 'url' => [ '/pages/view/34' ] ],
 		[ 'label' => 'Блог', 'url' => [ '/posts' ] ],
 		[ 'label' => 'Контакти', 'url' => [ '/site/contact' ] ],
 	];
 	if ( Yii::$app->user->isGuest ) {
-		$menuItems[] = [ 'label' => 'Signup', 'url' => [ '/site/signup' ] ];
-		$menuItems[] = [ 'label' => 'Login', 'url' => [ '/site/login' ] ];
+		$menuItems[] = [ 'label' => 'Зареєструватися', 'url' => [ '/site/signup' ] ];
+		$menuItems[] = [ 'label' => 'Увійти', 'url' => [ '/site/login' ] ];
 	} else {
 		$menuItems[] = '<li>'
 		               . Html::beginForm( [ '/site/logout' ], 'post' )

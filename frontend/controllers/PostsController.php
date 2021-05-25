@@ -14,8 +14,12 @@ class PostsController extends Controller {
 
 	public function actionIndex() {
 		$model = new Posts();
-		$posts = $model::find()->asArray()->all();
-		$url   = \Yii::$app->urlManager;
+		$posts = $model::find()
+		               ->orderBy( [ 'created_at' => SORT_DESC ] )
+		               ->asArray()
+		               ->all();
+
+		$url = \Yii::$app->urlManager;
 
 		$model->attrsMap(
 			array( 'content' => false )
@@ -36,17 +40,12 @@ class PostsController extends Controller {
 			);
 		} )->clearAttrsMap();
 
-		$mainPost        = $posts[0];
-		$firstRightPosts = array_slice( $posts, 1, 3 );
-		$otherPosts      = array_slice( $posts, 4 );
-		$leftCount       = (int) ( count( $otherPosts ) / 2 );
-		$otherLeft       = array_slice( $otherPosts, 0, $leftCount + 1 );
-		$otherRight      = array_slice( $otherPosts, $leftCount + 1 );
+		$leftCount       = (int) ( count( $posts ) / 2 );
+		$otherLeft       = array_slice( $posts, 0, $leftCount + 1 );
+		$otherRight      = array_slice( $posts, $leftCount + 1 );
 
 		$result = [
 			'model'           => $model,
-			'mainPost'        => $mainPost,
-			'firstRightPosts' => $firstRightPosts,
 			'otherLeft'       => $otherLeft,
 			'otherRight'      => $otherRight
 		];
