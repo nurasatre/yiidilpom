@@ -1,6 +1,8 @@
-(function ($) {
-    "use strict";
+(function ( $ ) {
+	"use strict";
 
-    $('#dataTable').DataTable();
+	$( '#dataTable' ).DataTable( {
+		order: [ [ 1, 'desc' ] ]
+	} );
 
-})(jQuery)
+})( jQuery )

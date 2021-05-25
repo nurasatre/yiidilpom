@@ -47,6 +47,7 @@ class Posts extends BaseModel {
 
 	protected function visibleAttributes(): array {
 		return [
+			'id',
 			'title',
 			'content',
 			'author',
