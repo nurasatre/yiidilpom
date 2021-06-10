@@ -29,9 +29,9 @@ AppAsset::register( $this );
 <div class="wrap">
 	<?php
 	$menuItems = [
-		[ 'label' => 'Головна', 'url' => [ '/site/index' ] ],
-		[ 'label' => 'Про нас', 'url' => [ '/pages/view/33' ] ],
-		[ 'label' => 'Послуги', 'url' => [ '/pages/view/34' ] ],
+		[ 'label' => 'Головна', 'url' => [ '/pages/view/3' ] ],
+		[ 'label' => 'Про нас', 'url' => [ '/pages/view/7' ] ],
+		[ 'label' => 'Послуги', 'url' => [ '/pages/view/4' ] ],
 		[ 'label' => 'Блог', 'url' => [ '/posts' ] ],
 		[ 'label' => 'Контакти', 'url' => [ '/site/contact' ] ],
 	];

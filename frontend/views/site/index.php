@@ -1,51 +1,80 @@
 <?php
 
 /* @var $this yii\web\View */
+ 
 
-$this->title = 'My Yii Application';
+$this->title = 'IT-course';
 ?>
 <div class="site-index">
+<style> 
+.lead {
+    max-width: 700px;
+    text-align: center;
+    margin: 0 auto;
+
+}
+h1 {
+    color: #e67e23;
+    text-transform: uppercase;
+}
+h2 {
+    color: #e67e23;
+    font-weight: 600;
+}
+.line {
+    border:1px solid #e67e23;
+}
+.col-lg-4 {
+    margin-bottom: 50px;
+}
+</style> 
 
     <div class="jumbotron">
-        <h1>Congratulations!</h1>
+        <h1>Українська IT-школа</h1>
 
-        <p class="lead">You have successfully created your Yii-powered application.</p>
+        <p class="lead">Розвивай власну кар'єру разом з нашими курсами. Отримуй нові навички в дружній атмосфері, де піклуються про кожного студента.</p>
 
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
+      
     </div>
 
     <div class="body-content">
 
         <div class="row">
             <div class="col-lg-4">
-                <h2>Heading</h2>
+                <h2>3900</h2>
+                <div class="line"></div>
+                <p>випускників закінчили нашу школу</p>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
             </div>
             <div class="col-lg-4">
-                <h2>Heading</h2>
-
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
-
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
+                <h2>75</h2>
+                <div class="line"></div>
+                <p>викладачів працює зараз</p>
+              
             </div>
             <div class="col-lg-4">
-                <h2>Heading</h2>
+                <h2>500</h2>
+                <div class="line"></div>
+                <p>стипендій надали партнери</p>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+            </div>
+             <div class="col-lg-4">
+                <h2>200+</h2>
+                <div class="line"></div>
+                <p>ІТ-компаній працевлаштували наших студентів</p>
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
+            </div>
+            <div class="col-lg-4">
+                <h2>400 000</h2>
+                <div class="line"></div>
+                <p>годин IT-освіти</p>
+              
+            </div>
+            <div class="col-lg-4">
+                <h2>700</h2>
+                <div class="line"></div>
+                <p>студентів навчаються прямо зараз</p>
+
             </div>
         </div>
 
