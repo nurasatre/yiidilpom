@@ -11,13 +11,14 @@ use yii\web\UploadedFile;
  * @property string $title
  * @property integer $author
  * @property string $description
- * @property string $loaded_at
+ * @property string loaded_at
+ * @property string mime_type
  */
 class Files extends BaseModel {
 
 	use AttributesFormats;
 
-	public function attributeLabels() {
+	public function attributeLabels(): array {
 		return [
 			'title'       => 'Files Name',
 			'author'      => 'Author of file',
@@ -26,13 +27,24 @@ class Files extends BaseModel {
 		];
 	}
 
-	public function rules() {
+	private function getMimeTypes(): array {
+		return array(
+			'image/jpeg',
+			'image/gif',
+			'image/png',
+			'application/pdf',
+			'application/msword',
+			'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+		);
+	}
+
+	public function rules(): array {
 		return [
-			[ [ 'url' ], 'file', 'extensions' => 'jpg, png' ],
+			[ [ 'url' ], 'file', 'mimeTypes' => implode( ', ', $this->getMimeTypes() ) ],
 		];
 	}
 
-	public function upload() {
+	public function upload(): array {
 		$name = $this->url->baseName . '.' . $this->url->extension;
 		$path = 'uploads/' . $this->url->baseName . '.' . $this->url->extension;
 
@@ -49,13 +61,14 @@ class Files extends BaseModel {
 
 		return self::find()
 		           ->where( [ 'not', [ 'url' => null ] ] )
+		           ->orderBy( [ 'loaded_at' => SORT_DESC ] )
 		           ->asArray()
 		           ->all();
 	}
 
 	protected function formatAttributesMap(): array {
 		return [
-			'loaded_at'    => array( $this, 'getCreatedDate' )
+			'loaded_at' => array( $this, 'getCreatedDate' )
 		];
 	}
 

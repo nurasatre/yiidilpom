@@ -64,6 +64,7 @@ class FilesController extends Controller {
 			if ( ! $model->validate() ) {
 				return [ 'error' => 'Failed validating...' ];
 			}
+			$model->mime_type = $file['type'];
 			$file             = $model->upload();
 			$model->url       = $file['url'];
 			$model->title     = $file['title'];

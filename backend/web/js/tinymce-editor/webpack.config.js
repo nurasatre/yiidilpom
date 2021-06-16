@@ -12,7 +12,7 @@ const getEntries = names => {
 }
 
 module.exports = {
-	entry: getEntries( [ 'user', 'pages', 'files', 'posts', 'comments' ] ),
+	entry: getEntries( [ 'user', 'pages', 'files', 'posts', 'comments', 'courses' ] ),
 	output: {
 		path: path.resolve( __dirname, '../dist' ),
 		filename: '[name].bundle.js'
@@ -39,7 +39,7 @@ module.exports = {
 				exclude: /node_modules/
 			},
 			{
-				test: /\.(png|jpg|gif|svg)$/,
+				test: /\.(png|jpe?g|gif|svg)$/i,
 				loader: 'file-loader',
 				options: {
 					name: '[name].[ext]?[hash]'

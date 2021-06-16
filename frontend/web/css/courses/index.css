@@ -1,0 +1,86 @@
+.nur-container {
+    max-width: 1200px;
+    width: 90%;
+    margin: 0 auto;
+    padding-top: 30px;
+}
+
+.nur-title {
+    font-size: 4rem;
+    text-align: center;
+    color: #465457;
+}
+
+.nur-line {
+    width: 100%;
+    height: 2px;
+    margin-top: 30px;
+    margin-bottom: 40px;
+    background-color: lightgray;
+}
+
+.nur-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.nur-cards-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 32.5%;
+    height: 350px;
+    padding: 15px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    margin-bottom: 16px;
+    background-color: hsl(259, 90%, 92%);
+    box-shadow: 0 0 0px rgba(0, 0, 0, 0.5);
+    transition: all ease-in-out 0.2s;
+    border-radius: 5px;
+}
+
+.nur-cards-item:hover {
+    box-shadow: 0 0 10px rgb(143, 141, 252);
+}
+
+.nur-card-title {
+    font-size: 24px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    color: #5d6cdb;
+}
+
+.nur-card-subtitle {
+    margin-bottom: 10px;
+    color: #465457;
+}
+
+.nur-card-text {
+    color: #465457;
+}
+
+.nur-card-line {
+    height: 1px;
+    margin-bottom: 25px;
+    background-color: #5d6cdb;
+}
+
+.nur-card-link {
+    font-weight: 600;
+    padding: 10px;
+    text-decoration: none;
+    border-radius: 20px;
+    border: 2px solid #5d6cdb;
+    color: #5d6cdb;
+    background-color: #fff;
+    transition: all ease-in-out 0.3s;
+}
+
+.nur-card-link:hover {
+    color: #fff;
+    background-color: #5d6cdb;
+}

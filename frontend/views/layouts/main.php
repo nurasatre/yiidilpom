@@ -39,6 +39,7 @@ AppAsset::register( $this );
 		$menuItems[] = [ 'label' => 'Зареєструватися', 'url' => [ '/site/signup' ] ];
 		$menuItems[] = [ 'label' => 'Увійти', 'url' => [ '/site/login' ] ];
 	} else {
+		$menuItems[] = [ 'label' => 'Матеріали курсів', 'url' => [ '/courses' ] ];
 		$menuItems[] = '<li>'
 		               . Html::beginForm( [ '/site/logout' ], 'post' )
 		               . Html::submitButton(

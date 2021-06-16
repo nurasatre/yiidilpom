@@ -23,16 +23,16 @@ class AdminMenu {
 				'label' => 'Core'
 			],
 			[
-				'type'     => 'link',
-				'icon'     => 'fas fa-user-circle',
-				'label'    => 'Profile',
-				'url'      => $url->createAbsoluteUrl( [ 'user' ] ),
+				'type'  => 'link',
+				'icon'  => 'fas fa-user-circle',
+				'label' => 'Profile',
+				'url'   => $url->createAbsoluteUrl( [ 'user' ] ),
 			],
 			[
-				'type'     => 'link',
-				'icon'     => 'fas fa-user-friends',
-				'label'    => 'Users',
-				'url'      => $url->createAbsoluteUrl( [ 'user/all' ] ),
+				'type'  => 'link',
+				'icon'  => 'fas fa-user-friends',
+				'label' => 'Users',
+				'url'   => $url->createAbsoluteUrl( [ 'user/all' ] ),
 			],
 			[
 				'type'  => 'heading',
@@ -77,16 +77,35 @@ class AdminMenu {
 				]
 			],
 			[
-				'type'     => 'link',
-				'icon'     => 'fas fa-comments',
-				'label'    => 'Comments',
-				'url'      => $url->createAbsoluteUrl( [ 'comments' ] ),
+				'type'  => 'link',
+				'icon'  => 'fas fa-comments',
+				'label' => 'Comments',
+				'url'   => $url->createAbsoluteUrl( [ 'comments' ] ),
 			],
 			[
 				'type'  => 'link',
 				'icon'  => 'far fa-file-image',
 				'label' => 'Files',
 				'url'   => $url->createAbsoluteUrl( [ 'files' ] ),
+			],
+			[
+				'type'     => 'link',
+				'icon'     => 'fas fa-atlas',
+				'slug'     => 'courses',
+				'label'    => 'Courses',
+				'url'      => $url->createAbsoluteUrl( [ 'courses' ] ),
+				'children' => [
+					[
+						'slug'  => 'coursesIndex',
+						'label' => 'View All',
+						'url'   => $url->createAbsoluteUrl( [ 'courses' ] ),
+					],
+					[
+						'slug'  => 'coursesCreate',
+						'label' => 'Add New',
+						'url'   => $url->createAbsoluteUrl( [ 'courses/create' ] ),
+					],
+				]
 			],
 		];
 	}

@@ -16,9 +16,10 @@
 				img-alt="Image"
 				style="max-width: 25rem; min-width: 20rem;"
 				tag="article"
+				:footer="image.title"
 				@click="selected = image"
 			>
-				<BCardImg :src="image.url" alt="Image" class="rounded-0" style="max-height: 15rem;"></BCardImg>
+				<BCardImg :src="getImagePlaceholderUrl( image )" alt="Image" class="rounded-0" style="max-height: 15rem;"></BCardImg>
 				<BButton
 					v-show="+image.id !== +selected.id"
 					variant="dark"
@@ -36,6 +37,7 @@ import { BButton, BModal, BCard, BCardImg } from 'bootstrap-vue';
 import "../modal.css";
 import "../button.css";
 import "../files-grid.css";
+import GetFilePlaceholder from "../mixins/GetFilePlaceholder";
 
 export default {
 	name: "FilesModal",
@@ -48,6 +50,7 @@ export default {
 		},
 		urlPrefix: String
 	},
+	mixins: [ GetFilePlaceholder ],
 	components: {
 		BButton,
 		BModal,

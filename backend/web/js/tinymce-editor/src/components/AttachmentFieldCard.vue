@@ -12,7 +12,7 @@
 				style="max-width: 20rem; min-width: 20rem;"
 				tag="article"
 			>
-				<BCardImg :src="this.attachment.url" alt="Image" class="rounded-0"
+				<BCardImg :src="getImagePlaceholderUrl( attachment )" alt="Image" class="rounded-0"
 						  style="max-height: 15rem;"></BCardImg>
 				<BFormInput
 					:value="this.attachment.title"
@@ -31,6 +31,7 @@ import BootCard from "./BootCard";
 import BootAlert from "./BootAlert";
 import RemoteMixin from "../mixins/RemoteMixin";
 import { BAlert, BBadge, BButton, BCard, BCardFooter, BCardImg, BCardText, BFormFile, BFormInput } from 'bootstrap-vue'
+import GetFilePlaceholder from "../mixins/GetFilePlaceholder";
 
 export default {
 	name: "AttachmentFieldCard",
@@ -43,7 +44,7 @@ export default {
 		BBadge,
 		BAlert, BCard, BCardImg, BCardFooter, BCardText, BFormInput
 	},
-	mixins: [ RemoteMixin ],
+	mixins: [ GetFilePlaceholder ],
 	props: {
 		header: {
 			type: String,
@@ -55,7 +56,11 @@ export default {
 				return [];
 			}
 		},
-		urlPrefix: String
+		urlPrefix: String,
+		attachmentKey: {
+			type: String,
+			default: 'attachment_id'
+		}
 	},
 	data() {
 		return {
@@ -65,8 +70,8 @@ export default {
 	created() {
 		const { model = {} } = this.remote( 'data' );
 
-		if ( model.attachment_id ) {
-			this.attachment = { ...this.files.find( item => +item.id === +model.attachment_id ) };
+		if ( model[ this.attachmentKey ] ) {
+			this.attachment = { ...this.files.find( item => +item.id === +model[ this.attachmentKey ] ) };
 			this.attachment.url = this.urlPrefix + this.attachment.url;
 		}
 	},

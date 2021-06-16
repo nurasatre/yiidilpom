@@ -21,13 +21,13 @@
 			<BCard
 				v-for="image in images"
 				:key="image.id"
-				bg-variant="info"
+				bg-variant="light"
 				img-alt="Image"
 				style="max-width: 20rem; min-width: 20rem;"
 				tag="article"
 				text-variant="white"
 			>
-				<BCardImg :src="image.url" alt="Image" class="rounded-0" style="max-height: 15rem;"></BCardImg>
+				<BCardImg :src="getImagePlaceholderUrl( image )" alt="Image" class="rounded-0" style="max-height: 15rem;"></BCardImg>
 				<BFormInput
 					:value="image.title"
 					type="text"
@@ -41,17 +41,17 @@
 
 <script>
 import { BAlert, BBadge, BButton, BCard, BCardFooter, BCardImg, BCardText, BFormFile, BFormInput } from 'bootstrap-vue'
-import RemoteMixin from "../mixins/RemoteMixin";
 
 import "../alert.css";
 import "../button.css";
 import "../files-grid.css";
 import AjaxRequest from "../mixins/AjaxRequest";
 import ToastPluginMixin from "../mixins/ToastPluginMixin";
+import GetFilePlaceholder from "../mixins/GetFilePlaceholder";
 
 export default {
 	name: "App",
-	mixins: [ RemoteMixin, ToastPluginMixin, AjaxRequest ],
+	mixins: [ GetFilePlaceholder, ToastPluginMixin, AjaxRequest ],
 	components: {
 		BFormFile,
 		BButton,
@@ -147,8 +147,8 @@ export default {
 			request.send( formData );
 		},
 		setImages( images ) {
-			this.images = [ ...this.images, ...images ];
-		},
+			this.images = [ ...images, ...this.images ];
+		}
 	}
 }
 </script>
