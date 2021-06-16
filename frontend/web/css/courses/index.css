@@ -1,10 +1,3 @@
-.nur-container {
-    max-width: 1200px;
-    width: 90%;
-    margin: 0 auto;
-    padding-top: 30px;
-}
-
 .nur-title {
     font-size: 4rem;
     text-align: center;
@@ -54,11 +47,6 @@
     color: #5d6cdb;
 }
 
-.nur-card-subtitle {
-    margin-bottom: 10px;
-    color: #465457;
-}
-
 .nur-card-text {
     color: #465457;
 }
@@ -66,7 +54,7 @@
 .nur-card-line {
     height: 1px;
     margin-bottom: 25px;
-    background-color: #5d6cdb;
+    background-color: #37373a;
 }
 
 .nur-card-link {

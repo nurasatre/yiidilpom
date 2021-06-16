@@ -17,7 +17,6 @@ $this->registerCssFile( '@web/css/courses/index.css' );
             <div class="nur-cards-item">
                 <div class="nur-card-item-top">
                     <div class="nur-card-title"><?= $course['title'] ?></div>
-                    <div class="nur-card-subtitle">початковий</div>
                     <div class="nur-card-text"><?= $course['desc'] ?></div>
                 </div>
 				<?php if ( isset( $course['__download_link'] ) ): ?>
